@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${producto.nombre} + ' - ELECTRO SHOP'"></title>
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        .detalle-container {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .detalle-img {
+            flex-basis: 40%;
+        }
+        .detalle-info {
+            flex-basis: 60%;
+        }
+        .precio-grande {
+            font-size: 2.8em;
+            color: #ff6600;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .detalle-desc {
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 25px;
+        }
+        .modelo-stock {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container">
+
+    <h1 th:text="${producto.nombre}" style="margin-top: 20px; font-size: 1.8em;">Nombre del Producto</h1>
+    <hr>
+
+    <div class="detalle-container">
+
+        <div class="detalle-img">
+            <img th:src="${producto.imagenUrl}"
+                 th:alt="${producto.nombre}"
+                 style="max-width: 100%; border: 1px solid #ddd;">
+        </div>
+
+        <div class="detalle-info">
+
+            <p class="precio-grande" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 1, 2)}"></p>
+
+            <h3 style="font-size: 1.2em;">Descripción del Producto:</h3>
+            <p class="detalle-desc" th:text="${producto.descripcion}">Descripción completa del producto.</p>
+
+            <div class="modelo-stock">
+                <p><strong>Modelo:</strong> <span th:text="${producto.modelo}"></span></p>
+                <p><strong>Categoría:</strong> <span th:text="${producto.categoria.nombre}"></span></p>
+                <p><strong>Stock Disponible:</strong> <span th:text="${producto.stock}"></span> unidades</p>
+            </div>
+
+            <form th:action="@{/cart/add}" method="POST">
+
+                <input type="hidden" name="productoId" th:value="${producto.id}" />
+
+                <div style="margin-bottom: 15px; margin-top: 20px;">
+                    <label for="cantidad">Cantidad:</label>
+                    <input type="number" id="cantidad" name="cantidad" value="1" min="1" max="99" style="width: 50px;" required>
+                </div>
+
+                <button type="submit" class="btn-comprar" style="width: 250px; font-size: 1.2em;">
+                    Añadir al Carrito
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script src="/js/main.js"></script>
+</body>
+</html>

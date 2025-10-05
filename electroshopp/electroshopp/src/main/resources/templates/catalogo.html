@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ELECTRO SHOP - Catálogo Principal</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}">
+    <p>Header Estático (Si falla Thymeleaf)</p>
+</div>
+
+<main class="container">
+    <h1 th:text="${titulo}">Catálogo de Productos Eléctricos</h1>
+
+    <div class="productos-grid">
+
+        <div class="producto-card" th:each="producto : ${productos}">
+
+            <a th:href="@{/producto/{id}(id=${producto.id})}" style="text-decoration: none;">
+                <img th:src="${producto.imagenUrl}" alt="Imagen de Producto" style="width:100%; max-height: 150px;">
+                <div class="producto-info">
+                    <p class="producto-nombre" th:text="${producto.nombre}"></p>
+                    <p class="producto-modelo" th:text="${producto.modelo}"></p>
+                    <p class="producto-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 1, 2)}"></p>
+                </div>
+            </a>
+
+            <form th:action="@{/cart/add}" method="POST">
+                <input type="hidden" name="productoId" th:value="${producto.id}" />
+
+                <button type="submit" class="btn-comprar">Añadir al Carrito</button>
+            </form>
+        </div>
+        <div th:if="${productos.isEmpty()}" style="grid-column: 1 / -1; text-align: center; padding: 50px;">
+            <p>El catálogo está vacío. ¡El backend está listo para recibir productos!</p>
+        </div>
+
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}">
+    <p>Footer Estático (Si falla Thymeleaf)</p>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

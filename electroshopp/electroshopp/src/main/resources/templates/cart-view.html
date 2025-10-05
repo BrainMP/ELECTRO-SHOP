@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrito de Compras - ELECTRO SHOP</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Estilos básicos para la tabla del carrito */
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+        }
+        .cart-table th, .cart-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .cart-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+        }
+        .cart-summary {
+            text-align: right;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e9e9e9;
+        }
+        .btn-checkout {
+            background-color: #28a745; /* Verde para checkout */
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container">
+    <h1>🛒 Carrito de Compras</h1>
+
+    <div th:if="${items.isEmpty()}">
+        <p>Tu carrito está vacío. ¡Explora nuestros <a href="/">productos</a>!</p>
+    </div>
+
+    <div th:unless="${items.isEmpty()}">
+        <table class="cart-table">
+            <thead>
+            <tr>
+                <th colspan="2">Producto</th>
+                <th>Modelo</th>
+                <th>Precio Unitario</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Acción</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${items}">
+                <td><img th:src="${item.producto.imagenUrl}" alt="Imagen" class="item-img"></td>
+                <td th:text="${item.producto.nombre}">Nombre del Producto</td>
+                <td th:text="${item.producto.modelo}">SHOME 120</td>
+
+                <td th:text="'$' + ${#numbers.formatDecimal(item.producto.precio, 1, 2)}"></td>
+
+                <td th:text="${item.cantidad}">1</td>
+
+                <td th:with="subtotal=${item.producto.precio.multiply(new java.math.BigDecimal(item.cantidad))}"
+                    th:text="'$' + ${#numbers.formatDecimal(subtotal, 1, 2)}">
+                    $199.50
+                </td>
+
+                <td><a href="#">Eliminar</a></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="cart-summary">
+            <h3>Total a Pagar:
+                <span style="color: #ff6600;" th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}">
+                    $999.99
+                </span>
+            </h3>
+            <button class="btn-checkout">Proceder al Pago</button>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script src="/js/main.js"></script>
+</body>
+</html>

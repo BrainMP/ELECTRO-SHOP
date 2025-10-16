@@ -81,7 +81,16 @@
                     $199.50
                 </td>
 
-                <td><a href="#">Eliminar</a></td>
+                <td>
+                    <form th:action="@{/cart/remove}" method="POST">
+
+                        <input type="hidden" name="productoId" th:value="${item.producto.id}" />
+
+                        <button type="submit" style="background: none; border: none; padding: 0; color: #0056b3; cursor: pointer;">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>

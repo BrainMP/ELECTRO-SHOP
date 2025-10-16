@@ -79,4 +79,18 @@ public class CartController {
 
         return total;
     }
+
+    //CartController removerdor de productos en el carrito
+    @PostMapping("/cart/remove")
+    public String removeFromCart(
+            @RequestParam("productoId") Long productoId,
+            RedirectAttributes redirectAttributes
+    ) {
+        cartService.removeItem(productoId);
+
+        // Redirige de vuelta a la vista del carrito
+        redirectAttributes.addFlashAttribute("mensaje", "Producto eliminado del carrito.");
+        return "redirect:/cart";
+    }
+// ...
 }

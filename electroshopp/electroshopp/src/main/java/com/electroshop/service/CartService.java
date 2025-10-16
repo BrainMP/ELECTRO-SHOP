@@ -29,6 +29,12 @@ public class CartService {
         return items.stream().mapToInt(item -> item.getCantidad()).sum();
     }
 
+    //Metodo para remover productos agregados al carrito
+    public void removeItem(Long productoId) {
+        // Busca y elimina el CartItem de la lista por su ID de Producto.
+        items.removeIf(item -> item.getProducto().getId().equals(productoId));
+    }
+
     // Método para calcular el total
     // NOTA: Para calcular el total necesitamos la lógica del Producto (precio * cantidad)
 

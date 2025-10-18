@@ -2,10 +2,11 @@
    ESTILOS BASE Y TIPOGRAFÍA
    ========================================= */
 body {
-    font-family: Arial, sans-serif;
+    /* Fuente moderna y clara */
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f7f7f7; /* Fondo gris claro */
+    background-color: #f7f7f7;
     color: #333;
 }
 
@@ -16,11 +17,22 @@ body {
     padding: 0 15px;
 }
 
+h1 {
+    font-size: 2em;
+    font-weight: 700;
+    color: #1e1e1e;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
 a {
     color: #0056b3;
     text-decoration: none;
+    transition: color 0.2s;
 }
 a:hover {
+    color: #ff6600;
     text-decoration: underline;
 }
 
@@ -29,8 +41,8 @@ a:hover {
    ========================================= */
 .header-steren {
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 10px 0 0; /* Ajuste para el menú inferior */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
 }
 
 .header-top {
@@ -43,103 +55,125 @@ a:hover {
     padding: 0 15px;
 }
 
+.logo a {
+    font-size: 1.8em;
+    font-weight: 800;
+    color: #0056b3;
+}
+
 /* Barra de Búsqueda */
 .search-bar {
     display: flex;
-    width: 40%;
-    max-width: 500px;
-    border: 2px solid #0056b3;
-    border-radius: 4px;
+    width: 45%;
+    max-width: 550px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
     overflow: hidden;
-    transition: border-color 0.2s, box-shadow 0.2s; /* Para el JS de focus */
+    transition: box-shadow 0.2s, border-color 0.2s;
 }
 
-/* Estilo para el estado de Focus (conectado a JS) */
-.search-bar.is-focused {
-    border-color: #ff6600; /* Color de acción naranja */
-    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+.search-bar.is-focused, .search-bar:focus-within {
+    border-color: #0056b3;
+    box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
 }
 
 .search-bar input {
     flex-grow: 1;
-    padding: 8px 10px;
+    padding: 10px 15px;
     border: none;
     outline: none;
+    font-size: 1em;
 }
 
 .search-btn {
     background-color: #0056b3;
     color: white;
     border: none;
-    padding: 8px 12px;
+    padding: 10px 18px;
     cursor: pointer;
     font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.search-btn:hover {
+    background-color: #ff6600;
 }
 
 /* Links de Usuario/Carrito */
 .user-links {
     display: flex;
-    gap: 15px;
-    font-size: 0.9em;
+    gap: 20px;
+    align-items: center;
+}
+.user-links a {
+    color: #555;
+}
+.cart-link span {
+    font-weight: bold;
+    color: #ff6600;
 }
 
 /* Menú de Navegación Principal */
 .main-nav {
     background-color: #333;
+    border-top: 1px solid #444;
 }
 .main-nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
+    flex-wrap: nowrap; /* Regla base (luego media query lo cambia) */
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
 }
 .main-nav li a {
     display: block;
-    padding: 10px 15px;
-    color: white;
+    padding: 8px 12px;
+    color: #ddd;
     text-transform: uppercase;
-    font-size: 0.85em;
-    white-space: nowrap; /* Evita que los nombres largos se rompan */
+    font-size: 0.8em;
+    font-weight: 600;
+    white-space: nowrap;
 }
 .main-nav li a:hover {
-    background-color: #555;
+    background-color: #ff6600;
+    color: white;
     text-decoration: none;
 }
 
 /* =========================================
-   ESTILOS DEL FOOTER (3 Columnas)
+   ESTILOS DEL FOOTER
    ========================================= */
 .footer-steren {
     background-color: #e9e9e9;
     padding: 30px 0 15px;
     font-size: 0.9em;
     margin-top: 50px;
-    border-top: 1px solid #ddd;
+    border-top: 5px solid #0056b3;
 }
 
 .footer-grid {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 15px;
-    gap: 30px;
+    gap: 20px;
 }
 
 .footer-col {
-    flex-basis: 30%;
+    flex-basis: 220px;
 }
 
 .footer-col h3 {
-    text-transform: uppercase;
-    font-size: 1em;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #444;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #1e1e1e;
+    margin-bottom: 12px;
 }
 
 .footer-col ul {
@@ -149,17 +183,17 @@ a:hover {
 }
 
 .footer-col li {
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .footer-col a {
-    color: #666;
+    color: #555;
     font-size: 0.9em;
 }
 
 .footer-bottom {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 30px;
     padding-top: 15px;
     border-top: 1px solid #ccc;
     color: #777;
@@ -167,12 +201,12 @@ a:hover {
 }
 
 /* =========================================
-   ESTILOS DEL CATÁLOGO (Grid de Productos)
+   ESTILOS DE PRODUCTO (Catálogo)
    ========================================= */
 .productos-grid {
     display: grid;
-    /* 5 columnas */
-    grid-template-columns: repeat(5, 1fr);
+    /* 5 columnas en escritorio */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     margin-top: 30px;
 }
@@ -180,31 +214,55 @@ a:hover {
 .producto-card {
     background-color: white;
     padding: 15px;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     text-align: center;
-    transition: box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 300px;
 }
 
 .producto-card:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.producto-card img {
+    max-width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 10px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.producto-info {
+    flex-grow: 1;
+    text-align: center;
+    padding-top: 10px;
 }
 
 .producto-nombre {
-    font-weight: bold;
+    font-weight: 600;
     color: #333;
-    margin: 0 0 3px 0;
-    font-size: 0.95em;
+    margin: 0 0 5px 0;
+    font-size: 1em;
+    line-height: 1.3;
+}
+
+.producto-modelo {
+    font-size: 0.85em;
+    color: #888;
+    margin-bottom: 10px;
+    font-weight: 500;
 }
 
 .producto-precio {
-    font-size: 1.1em;
+    font-size: 1.3em;
     color: #d9534f;
-    font-weight: bold;
+    font-weight: 700;
     margin: 10px 0;
 }
 
@@ -212,10 +270,90 @@ a:hover {
     background-color: #ff6600;
     color: white;
     border: none;
-    padding: 8px 15px;
+    padding: 10px 15px;
     cursor: pointer;
     width: 100%;
     font-weight: bold;
     border-radius: 4px;
-    margin-top: 10px;
+    margin-top: 15px;
+    transition: background-color 0.2s;
+}
+.btn-comprar:hover {
+    background-color: #e65c00;
+}
+
+/* =========================================
+   MEDIA QUERIES (RESPONSIVE DESIGN)
+   ========================================= */
+
+/* --- Pantallas Medianas (Tabletas y Laptops Pequeñas: máx. 1024px) --- */
+@media (max-width: 1024px) {
+    /* Ajustar el padding y ancho general */
+    .header-top, .main-nav ul, .footer-grid, .container {
+        width: 95%;
+        padding: 0 10px;
+    }
+
+    /* El menú principal debe permitir el ajuste de líneas */
+    .main-nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* --- Pantallas Pequeñas (Móviles: máx. 768px) --- */
+@media (max-width: 768px) {
+
+    /* 1. APILAR EL HEADER TOP */
+    .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    /* 2. BARRA DE BÚSQUEDA A ANCHO COMPLETO */
+    .search-bar {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* 3. LINKS DE USUARIO Y CARRITO */
+    .user-links {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 5px;
+        font-size: 0.9em;
+    }
+
+    /* 4. AJUSTAR EL GRID DE PRODUCTOS */
+    .productos-grid {
+        /* Cambia de 5 columnas a 2 columnas en móvil */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    /* 5. AJUSTAR TABLA DEL CARRITO EN MÓVIL */
+    .cart-table {
+        display: block;
+        overflow-x: auto; /* Permite desplazamiento horizontal para ver todas las columnas */
+        white-space: nowrap;
+    }
+
+    /* 6. APILAR EL FOOTER */
+    .footer-grid {
+        flex-direction: column;
+    }
+    .footer-col {
+        flex-basis: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+/* --- Pantallas Súper Pequeñas (Móviles Verticales: máx. 480px) --- */
+@media (max-width: 480px) {
+
+    /* Mostrar solo 1 columna */
+    .productos-grid {
+        grid-template-columns: 1fr;
+    }
 }

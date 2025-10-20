@@ -1,43 +1,74 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 1. SIMULACIÓN DE CARRITO DE COMPRAS ---
-    const botonesCarrito = document.querySelectorAll('.btn-comprar');
-    const contadorCarritoLink = document.querySelector('.cart-link');
-    let totalItems = 0;
+    // --- 1. FUNCIÓN DE COLAPSADO DEL FOOTER (ACORDEÓN) ---
+    // Esta lógica maneja la apertura/cierre de las listas del footer en móvil
+    const footerToggles = document.querySelectorAll('.footer-toggle');
 
-    botonesCarrito.forEach(boton => {
-        boton.addEventListener('click', (evento) => {
+    footerToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
 
-            // Incrementa y actualiza el contador
-            totalItems++;
-            if (contadorCarritoLink) {
-                contadorCarritoLink.textContent = `🛒 Mi carrito (${totalItems})`;
+            // Solo activar la funcionalidad cuando sea vista móvil (<= 769px)
+            if (window.innerWidth <= 769) {
+
+                const targetId = toggle.getAttribute('data-target');
+                const targetContent = document.getElementById(targetId);
+
+                if (targetContent) {
+
+                    // Lógica para cerrar todos los demás acordeones abiertos
+                    document.querySelectorAll('.footer-content.is-active').forEach(openContent => {
+                        if (openContent.id !== targetId) {
+                            openContent.classList.remove('is-active');
+                            // También quitamos la clase 'is-active' del título para que cambie el signo/flecha
+                            const relatedToggle = document.querySelector(`[data-target="${openContent.id}"]`);
+                            if (relatedToggle) {
+                                relatedToggle.classList.remove('is-active');
+                            }
+                        }
+                    });
+
+                    // Alternar la clase 'is-active' en el contenido (para mostrar/ocultar)
+                    targetContent.classList.toggle('is-active');
+
+                    // Alternar la clase 'is-active' en el título (para rotar la flecha)
+                    toggle.classList.toggle('is-active');
+                }
             }
-
-            // Notificación visual de éxito
-            evento.target.textContent = 'Añadido!';
-            evento.target.style.backgroundColor = '#28a745'; // Color verde
-            setTimeout(() => {
-                evento.target.textContent = 'Añadir al Carrito';
-                evento.target.style.backgroundColor = '#ff6600'; // Vuelve al color naranja
-            }, 800);
         });
     });
 
-    // --- 2. INTERACTIVIDAD VISUAL EN BARRA DE BÚSQUEDA ---
+    // ------------------------------------------------------------------
+    // --- 2. FUNCIÓN DE MENÚ HAMBURGUESA DESLIZABLE ---
+    // ------------------------------------------------------------------
+    const menuToggle = document.getElementById('menu-toggle');
+    const mainMenuContainer = document.getElementById('main-menu');
+
+    if (menuToggle && mainMenuContainer) {
+        menuToggle.addEventListener('click', () => {
+            mainMenuContainer.classList.toggle('is-open');
+        });
+
+        // Cierra el menú deslizable si el usuario hace clic en un enlace (navega)
+        document.querySelectorAll('.main-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 769) {
+                    mainMenuContainer.classList.remove('is-open');
+                }
+            });
+        });
+    }
+
+    // --- 3. INTERACTIVIDAD VISUAL EN BARRA DE BÚSQUEDA ---
     const searchInput = document.querySelector('.search-bar input');
     const searchBarContainer = document.querySelector('.search-bar');
 
     if (searchInput && searchBarContainer) {
-        // Añade la clase CSS 'is-focused' al hacer clic
         searchInput.addEventListener('focus', () => {
             searchBarContainer.classList.add('is-focused');
         });
 
-        // Remueve la clase al perder el foco
         searchInput.addEventListener('blur', () => {
             searchBarContainer.classList.remove('is-focused');
         });
     }
-
 });

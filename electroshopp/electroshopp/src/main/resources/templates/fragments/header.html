@@ -1,6 +1,10 @@
 <header th:fragment="header" class="header-steren" xmlns:th="http://www.thymeleaf.org">
 
     <div class="header-top">
+
+        <button id="menu-toggle" class="menu-toggle">
+            &#9776; </button>
+
         <div class="logo">
             <a href="/">
                 <span style="font-size: 1.5em; font-weight: bold; color: #0056b3;">ELECTRO SHOP</span>
@@ -20,6 +24,15 @@
             </a>
         </div>
 
-    </div> <nav class="main-nav">
-</nav>
+    </div>
+
+    <div id="main-menu" class="main-menu-container">
+        <nav class="main-nav">
+            <ul>
+                <li th:each="cat : ${categoriasGlobal}">
+                    <a th:href="@{/catalogo(cat=${cat.nombre})}" th:text="${cat.nombre}">Nombre Categoría</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </header>

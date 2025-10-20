@@ -2,32 +2,39 @@
     <div class="footer-grid">
 
         <div class="footer-col">
-            <h3>CATEGORÍAS</h3>
-            <ul>
-                <li th:each="cat : ${categoriasGlobal}">
-                    <a th:href="@{/catalogo(cat=${cat.nombre})}" th:text="${cat.nombre}"></a>
-                </li>
-            </ul>
+            <h3 class="footer-toggle" data-target="footer-cat">CATEGORÍAS</h3>
+
+            <div id="footer-cat" class="footer-content">
+                <ul>
+                    <li th:each="cat : ${categoriasGlobal}">
+                        <a th:href="@{/catalogo(cat=${cat.nombre})}" th:text="${cat.nombre}"></a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <div class="footer-col">
-            <h3>ELECTRO SHOP</h3>
-            <ul>
-                <li><a href="/acerca">Acerca de Nosotros</a></li>
-                <li><a href="/tiendas">Ubicación de Tiendas</a></li>
-                <li><a href="/catalogo-digital">Catálogo Digital</a></li>
-                <li><a href="/empleo">Únete al equipo</a></li>
-            </ul>
+            <h3 class="footer-toggle" data-target="footer-shop">ELECTRO SHOP</h3>
+            <div id="footer-shop" class="footer-content">
+                <ul>
+                    <li><a href="/acerca">Acerca de Nosotros</a></li>
+                    <li><a href="/tiendas">Ubicación de Tiendas</a></li>
+                    <li><a href="/catalogo-digital">Catálogo Digital</a></li>
+                    <li><a href="/empleo">Únete al equipo</a></li>
+                </ul>
+            </div>
         </div>
 
         <div class="footer-col">
-            <h3>POLÍTICAS</h3>
-            <ul>
-                <li><a href="/contrato">Contrato de Adhesión</a></li>
-                <li><a href="/etica">Código de Ética</a></li>
-                <li><a href="/privacidad">Política de Privacidad</a></li>
-                <li><a href="/garantias">Información de Garantías</a></li>
-            </ul>
+            <h3 class="footer-toggle" data-target="footer-politicas">POLÍTICAS</h3>
+            <div id="footer-politicas" class="footer-content">
+                <ul>
+                    <li><a href="/contrato">Contrato de Adhesión</a></li>
+                    <li><a href="/etica">Código de Ética</a></li>
+                    <li><a href="/privacidad">Política de Privacidad</a></li>
+                    <li><a href="/garantias">Información de Garantías</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 

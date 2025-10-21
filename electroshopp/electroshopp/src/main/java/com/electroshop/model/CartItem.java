@@ -39,4 +39,19 @@ public class CartItem implements Serializable {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+
+    // Esto es necesario para que Spring y Java comparen los ítems correctamente en la lista.
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItem cartItem = (CartItem) o;
+        // La igualdad se define por el ID del Producto
+        return producto.getId().equals(cartItem.producto.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return producto.getId().hashCode();
+    }
 }

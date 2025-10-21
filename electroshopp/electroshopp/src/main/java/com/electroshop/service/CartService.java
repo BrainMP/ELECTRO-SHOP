@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope; // Importante para la sesión
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @SessionScope // ¡CRUCIAL! Le dice a Spring que esta clase vive en la sesión del usuario
@@ -15,8 +16,22 @@ public class CartService {
 
     // Este es el primer método clave: añadir un ítem.
     // Lo simplificaremos para evitar lógica compleja de actualización por ahora.
-    public void addItem(CartItem item) {
-        items.add(item);
+    public void addItem(CartItem newItem) {
+        Long newProductId = newItem.getProducto().getId();
+
+        // 1. Buscar si el producto ya existe en la lista de la sesión
+        Optional<CartItem> existingItem = items.stream()
+                .filter(item -> item.getProducto().getId().equals(newProductId))
+                .findFirst();
+
+        if (existingItem.isPresent()) {
+            // 2. Si ya existe, SUMAR la cantidad
+            CartItem item = existingItem.get();
+            item.setCantidad(item.getCantidad() + newItem.getCantidad());
+        } else {
+            // 3. Si es nuevo, simplemente agregarlo
+            items.add(newItem);
+        }
     }
 
     // Método para obtener el contenido del carrito
@@ -34,8 +49,5 @@ public class CartService {
         // Busca y elimina el CartItem de la lista por su ID de Producto.
         items.removeIf(item -> item.getProducto().getId().equals(productoId));
     }
-
-    // Método para calcular el total
-    // NOTA: Para calcular el total necesitamos la lógica del Producto (precio * cantidad)
 
 }

@@ -32,7 +32,7 @@ public class ProductoController {
         } else {
             // Caso 2: Vista de catálogo completa
             productos = productoRepository.findAll();
-            model.addAttribute("titulo", "Catálogo de Productos Eléctricos");
+            model.addAttribute("titulo", "Catálogo");
         }
 
         model.addAttribute("productos", productos);

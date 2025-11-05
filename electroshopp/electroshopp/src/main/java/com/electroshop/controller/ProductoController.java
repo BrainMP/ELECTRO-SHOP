@@ -37,7 +37,6 @@ public class ProductoController {
 
         model.addAttribute("productos", productos);
 
-        // ¡Se recomienda añadir el título al modelo, incluso si no lo usas en HTML aún!
         // model.addAttribute("titulo", "Título de página");
 
         return "catalogo";

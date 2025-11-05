@@ -1,53 +1,90 @@
-package com.electroshop.service;
+    package com.electroshop.service;
 
-import com.electroshop.model.CartItem;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.SessionScope; // Importante para la sesión
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+    import com.electroshop.model.CartItem;
+    import org.springframework.stereotype.Service;
+    import org.springframework.web.context.annotation.SessionScope;
+    import java.util.ArrayList;
+    import java.util.List;
+    import java.util.Optional;
 
-@Service
-@SessionScope // ¡CRUCIAL! Le dice a Spring que esta clase vive en la sesión del usuario
-public class CartService {
+    @Service
+    @SessionScope
+    public class CartService {
 
-    // Lista para almacenar todos los CartItem del usuario actual
-    private List<CartItem> items = new ArrayList<>();
+        private List<CartItem> items = new ArrayList<>();
 
-    // Este es el primer método clave: añadir un ítem.
-    // Lo simplificaremos para evitar lógica compleja de actualización por ahora.
-    public void addItem(CartItem newItem) {
-        Long newProductId = newItem.getProducto().getId();
+        // ----------------------------------------------------
+        // MÉTODO CLAVE: AÑADIR/CONSOLIDAR ITEM
+        // ----------------------------------------------------
+        public void addItem(CartItem newItem) {
+            Long newProductId = newItem.getProducto().getId();
 
-        // 1. Buscar si el producto ya existe en la lista de la sesión
-        Optional<CartItem> existingItem = items.stream()
-                .filter(item -> item.getProducto().getId().equals(newProductId))
-                .findFirst();
+            // 1. Busca si el producto ya existe (CONSOLIDACIÓN)
+            Optional<CartItem> existingItem = items.stream()
+                    .filter(item -> item.getProducto().getId().equals(newProductId))
+                    .findFirst();
 
-        if (existingItem.isPresent()) {
-            // 2. Si ya existe, SUMAR la cantidad
-            CartItem item = existingItem.get();
-            item.setCantidad(item.getCantidad() + newItem.getCantidad());
-        } else {
-            // 3. Si es nuevo, simplemente agregarlo
-            items.add(newItem);
+            if (existingItem.isPresent()) {
+                // 2. Si ya existe, SUMAR la cantidad
+                CartItem item = existingItem.get();
+                item.setCantidad(item.getCantidad() + newItem.getCantidad());
+            } else {
+                // 3. Si es nuevo, simplemente agregarlo
+                items.add(newItem);
+            }
+        }
+
+        // ----------------------------------------------------
+        // MÉTODO NUEVO 1: AUMENTAR LA CANTIDAD (+)
+        // ----------------------------------------------------
+        public void increaseQuantity(Long productoId) {
+            Optional<CartItem> existingItem = items.stream()
+                    .filter(item -> item.getProducto().getId().equals(productoId))
+                    .findFirst();
+
+            if (existingItem.isPresent()) {
+                CartItem item = existingItem.get();
+                item.setCantidad(item.getCantidad() + 1); // Incrementa en 1
+            }
+        }
+
+
+        // ----------------------------------------------------
+        // MÉTODO NUEVO 2: DISMINUIR LA CANTIDAD (-)
+        // ----------------------------------------------------
+        public void decreaseQuantity(Long productoId) {
+            Optional<CartItem> existingItem = items.stream()
+                    .filter(item -> item.getProducto().getId().equals(productoId))
+                    .findFirst();
+
+            if (existingItem.isPresent()) {
+                CartItem item = existingItem.get();
+                // Si la cantidad es mayor a 1, la disminuimos
+                if (item.getCantidad() > 1) {
+                    item.setCantidad(item.getCantidad() - 1); // Disminuye en 1
+                } else {
+                    // Si la cantidad es 1, al disminuirla la eliminamos por completo
+                    removeItem(productoId); // Llama al método de eliminación total
+                }
+            }
+        }
+
+        // ----------------------------------------------------
+        // MÉTODO DE ELIMINACIÓN TOTAL DE LÍNEA
+        // ----------------------------------------------------
+        public void removeItem(Long productoId) {
+            // Elimina la única línea que contiene ese productoId
+            items.removeIf(item -> item.getProducto().getId().equals(productoId));
+        }
+
+        // ----------------------------------------------------
+        // MÉTODOS DE LECTURA
+        // ----------------------------------------------------
+        public List<CartItem> getItems() {
+            return items;
+        }
+
+        public int getTotalQuantity() {
+            return items.stream().mapToInt(CartItem::getCantidad).sum();
         }
     }
-
-    // Método para obtener el contenido del carrito
-    public List<CartItem> getItems() {
-        return items;
-    }
-    // Agrega este método para que el GlobalControllerAdvice pueda contar
-    public int getTotalQuantity() {
-        // Si CartItem tiene la cantidad, sumamos la cantidad de todos los ítems
-        return items.stream().mapToInt(item -> item.getCantidad()).sum();
-    }
-
-    //Metodo para remover productos agregados al carrito
-    public void removeItem(Long productoId) {
-        // Busca y elimina el CartItem de la lista por su ID de Producto.
-        items.removeIf(item -> item.getProducto().getId().equals(productoId));
-    }
-
-}

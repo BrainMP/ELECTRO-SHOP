@@ -3,106 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <title>Carrito de Compras - ELECTRO SHOP</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    <style>
-        /* Estilos básicos para la tabla del carrito */
-        .cart-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: white;
-        }
-        .cart-table th, .cart-table td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        .cart-table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .item-img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-        }
-        .cart-summary {
-            text-align: right;
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #e9e9e9;
-        }
-        .btn-checkout {
-            background-color: #28a745; /* Verde para checkout */
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-size: 1.1em;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/styles.css?v=6">
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
 
-<main class="container">
-    <h1>🛒 Carrito de Compras</h1>
+<main class="cart-container">
 
     <div th:if="${items.isEmpty()}">
         <p>Tu carrito está vacío. ¡Explora nuestros <a href="/">productos</a>!</p>
     </div>
 
     <div th:unless="${items.isEmpty()}">
-        <table class="cart-table">
-            <thead>
-            <tr>
-                <th colspan="2">Producto</th>
-                <th>Modelo</th>
-                <th>Precio Unitario</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
-                <th>Acción</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="item : ${items}">
-                <td><img th:src="${item.producto.imagenUrl}" alt="Imagen" class="item-img"></td>
-                <td th:text="${item.producto.nombre}">Nombre del Producto</td>
-                <td th:text="${item.producto.modelo}">SHOME 120</td>
 
-                <td th:text="'$' + ${#numbers.formatDecimal(item.producto.precio, 1, 2)}"></td>
-
-                <td th:text="${item.cantidad}">1</td>
-
-                <td th:with="subtotal=${item.producto.precio.multiply(new java.math.BigDecimal(item.cantidad))}"
-                    th:text="'$' + ${#numbers.formatDecimal(subtotal, 1, 2)}">
-                    $199.50
-                </td>
-
-                <td>
-                    <form th:action="@{/cart/remove}" method="POST">
-
-                        <input type="hidden" name="productoId" th:value="${item.producto.id}" />
-
-                        <button type="submit" style="background: none; border: none; padding: 0; color: #0056b3; cursor: pointer;">
-                            Eliminar
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-        <div class="cart-summary">
-            <h3>Total a Pagar:
-                <span style="color: #ff6600;" th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}">
-                    $999.99
-                </span>
-            </h3>
-            <button class="btn-checkout">Proceder al Pago</button>
+        <!-- Encabezado de entrega -->
+        <div class="delivery-options-card">
+            <h3 class="delivery-title">Elige como quieres recibir tu pedido</h3>
+            <div class="delivery-buttons-container">
+                <button class="delivery-option-btn active">Recoge en tienda</button>
+                <button class="delivery-option-btn">Recibe a domicilio</button>
+            </div>
         </div>
+
+        <!-- Items del carrito -->
+        <div class="cart-items-wrapper">
+            <div class="cart-item-card" th:each="item : ${items}">
+
+                <!-- Columna Imagen -->
+                <div class="cart-item-image">
+                    <img th:src="${item.producto.imagenUrl}" alt="Producto" class="product-thumbnail">
+                </div>
+
+                <!-- Columna Información -->
+                <div class="cart-item-info">
+                    <!-- Código del producto -->
+                    <div class="product-code" th:text="${item.producto.modelo}">GEN-IS</div>
+
+                    <!-- Nombre del producto -->
+                    <h4 class="product-title" th:text="${item.producto.nombre}">Generador de Gasolina Portátil 1500W</h4>
+
+                    <!-- Controles de cantidad -->
+                    <div class="quantity-controls-wrapper">
+                        <div class="quantity-selector">
+                            <a th:href="@{/cart/decrease/{id}(id=${item.producto.id})}" class="qty-btn minus">-</a>
+                            <span class="qty-display" th:text="${item.cantidad}">1</span>
+                            <a th:href="@{/cart/increase/{id}(id=${item.producto.id})}" class="qty-btn plus">+</a>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje de descuento -->
+                    <div class="discount-badge">
+                        IVA Incuido <Incluido></Incluido>
+                    </div>
+                </div>
+
+                <!-- Columna Precio y Acciones -->
+                <div class="cart-item-actions">
+                    <div class="item-total-price"
+                         th:text="'$' + ${#numbers.formatDecimal(item.producto.precio * item.cantidad, 1, 2)}">
+                        $110.00
+                    </div>
+                    <a th:href="@{/cart/remove/{id}(id=${item.producto.id})}" class="remove-product-btn">Eliminar</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumen y botones -->
+        <div class="cart-summary-card">
+            <div class="total-section">
+                <div class="subtotal-line">
+                    <span class="total-label">Subtotal:</span>
+                    <span class="total-amount" th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}">$110.00</span>
+                </div>
+            </div>
+
+            <div class="checkout-buttons">
+                <!-- Botón PAGAR AHORA (MODIFICADO) -->
+                <form th:action="@{/pagar}" method="post" style="display: inline; width: 100%;">
+                    <button type="submit" class="primary-checkout-btn" style="width: 100%;">Pagar Ahora</button>
+                </form>
+
+                <!-- Botón SEGUIR COMPRANDO (MODIFICADO) -->
+                <a th:href="@{/cart/continue-shopping}" class="secondary-checkout-btn" style="display: block; text-align: center; text-decoration: none;">
+                    Seguir Comprando
+                </a>
+            </div>
+        </div>
+
     </div>
 </main>
 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${pageTitle} + ' - ELECTRO SHOP'">ELECTRO SHOP</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/info-pages.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="info-page-container">
+    <div class="info-page-header">
+        <h1 th:text="${pageHeader}">Título de la Página</h1>
+    </div>
+
+    <div class="info-content">
+        <!-- Contenido dinámico básico -->
+        <p th:text="${pageContent}">Contenido de la página...</p>
+        <h3 class="titulo-seccion" th:text="${pageMision}"></h3>
+        <p th:text="${pageContent1}">
+        <p th:text="${pageContent4}">
+        <h3 class="titulo-seccion" th:text="${pageVision}"></h3>
+        <p th:text="${pageContent2}">
+        </p>
+
+
+        <!-- Contenido HTML adicional si se proporciona -->
+        <div th:if="${htmlContent}" th:utext="${htmlContent}"></div>
+
+        <!-- Secciones específicas por tipo de página -->
+        <div th:if="${pageTitle == 'Ubicación de Tiendas'}" class="store-hours">
+            <h3>📅 Horario de Atención</h3>
+            <p><strong>Lunes a Viernes:</strong> 9:00 AM - 6:00 PM</p>
+            <p><strong>Sábados:</strong> 9:00 AM - 2:00 PM</p>
+            <p><strong>Domingos:</strong> Cerrado</p>
+        </div>
+
+        <div th:if="${pageTitle == 'Política de Privacidad'}" class="legal-notice">
+            <h3>📞 Contacto para Ejercer Derechos ARCO</h3>
+            <p>Para acceder, rectificar, cancelar u oponerte al tratamiento de tus datos personales, contacta a nuestro Departamento de Privacidad:</p>
+            <p><strong>Email:</strong> privacidad@electroshop.com</p>
+            <p><strong>Teléfono:</strong> (55) 1234-5678</p>
+        </div>
+
+        <div th:if="${pageTitle == 'Garantías'}" class="contact-info">
+            <h3 class="titulo-seccion" th:text="${PageGarant}"></h3>
+            <h3>🔧 Servicio de Garantías</h3>
+            <p>Para procesar tu garantía, comunícate con nuestro centro de servicio:</p>
+            <p><strong>Teléfono:</strong> (55) 8765-4321</p>
+            <p><strong>Email:</strong> garantias@electroshop.com</p>
+        </div>
+
+        <div th:if="${pageTitle == 'Únete al equipo'}" class="contact-info">
+            <h3>📧 Envía tu CV</h3>
+            <p>Envía tu curriculum vitae a:</p>
+            <p><strong>Email:</strong> recursos.humanos@electroshop.com</p>
+            <p><strong>Asunto:</strong> "Aplicación - [Puesto de interés]"</p>
+        </div>
+    </div>
+
+    <div class="back-to-home">
+        <a th:href="@{/}" class="btn-back">← Volver al Inicio</a>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script src="/js/main.js"></script>
+</body>
+</html>

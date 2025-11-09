@@ -590,6 +590,118 @@ a:hover {
     color: #ff6b00 !important;
 }
 
+/* CSS para LOGIN */
+.login-container {
+            max-width: 450px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .login-container h1 {
+            text-align: center;
+            border-bottom: none;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Importante para que el padding no rompa el ancho */
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 5px;
+            border: none;
+            background-color: #0056b3; /* Azul primario */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-login:hover {
+            background-color: #004080;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+/* CSS para REGISTER*/
+        .login-container {
+            max-width: 450px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .login-container h1 {
+            text-align: center;
+            border-bottom: none;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 5px;
+            border: none;
+            background-color: #0056b3;
+            color: white;
+            cursor: pointer;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
 /* =========================================
    MEDIA QUERIES (RESPONSIVE DESIGN)
    ========================================= */

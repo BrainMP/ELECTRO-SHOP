@@ -1,90 +1,220 @@
-    package com.electroshop.service;
+package com.electroshop.service;
 
-    import com.electroshop.model.CartItem;
-    import org.springframework.stereotype.Service;
-    import org.springframework.web.context.annotation.SessionScope;
-    import java.util.ArrayList;
-    import java.util.List;
-    import java.util.Optional;
+import com.electroshop.model.Carrito;
+import com.electroshop.model.CarritoItem;
+import com.electroshop.model.Producto;
+import com.electroshop.model.Usuario;
+import com.electroshop.repository.CarritoItemRepository;
+import com.electroshop.repository.CarritoRepository;
+import com.electroshop.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-    @Service
-    @SessionScope
-    public class CartService {
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-        private List<CartItem> items = new ArrayList<>();
+/**
+ * Versión 2.0 del CartService.
+ * Ya NO usa @SessionScope.
+ * Ahora interactúa directamente con la base de datos (persiste el carrito).
+ */
+@Service
+public class CartService {
 
-        // ----------------------------------------------------
-        // MÉTODO CLAVE: AÑADIR/CONSOLIDAR ITEM
-        // ----------------------------------------------------
-        public void addItem(CartItem newItem) {
-            Long newProductId = newItem.getProducto().getId();
+    @Autowired
+    private CarritoRepository carritoRepository;
 
-            // 1. Busca si el producto ya existe (CONSOLIDACIÓN)
-            Optional<CartItem> existingItem = items.stream()
-                    .filter(item -> item.getProducto().getId().equals(newProductId))
-                    .findFirst();
+    @Autowired
+    private CarritoItemRepository carritoItemRepository;
 
-            if (existingItem.isPresent()) {
-                // 2. Si ya existe, SUMAR la cantidad
-                CartItem item = existingItem.get();
-                item.setCantidad(item.getCantidad() + newItem.getCantidad());
-            } else {
-                // 3. Si es nuevo, simplemente agregarlo
-                items.add(newItem);
-            }
-        }
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-        // ----------------------------------------------------
-        // MÉTODO NUEVO 1: AUMENTAR LA CANTIDAD (+)
-        // ----------------------------------------------------
-        public void increaseQuantity(Long productoId) {
-            Optional<CartItem> existingItem = items.stream()
-                    .filter(item -> item.getProducto().getId().equals(productoId))
-                    .findFirst();
+    // --- Métodos de Ayuda Internos ---
 
-            if (existingItem.isPresent()) {
-                CartItem item = existingItem.get();
-                item.setCantidad(item.getCantidad() + 1); // Incrementa en 1
-            }
-        }
+    /**
+     * Busca al usuario logueado en la BD.
+     */
+    private Usuario getUsuario(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
+    }
 
+    /**
+     * Busca el carrito del usuario. Si no existe, crea uno nuevo.
+     */
+    private Carrito getOrCreateCarrito(Usuario usuario) {
+        // Busca el carrito por usuario. Si no lo encuentra (.orElseGet), crea uno nuevo.
+        return carritoRepository.findByUsuario(usuario).orElseGet(() -> {
+            Carrito nuevoCarrito = new Carrito();
+            nuevoCarrito.setUsuario(usuario);
+            return carritoRepository.save(nuevoCarrito);
+        });
+    }
 
-        // ----------------------------------------------------
-        // MÉTODO NUEVO 2: DISMINUIR LA CANTIDAD (-)
-        // ----------------------------------------------------
-        public void decreaseQuantity(Long productoId) {
-            Optional<CartItem> existingItem = items.stream()
-                    .filter(item -> item.getProducto().getId().equals(productoId))
-                    .findFirst();
+    // --- Métodos Públicos (Llamados por el Controlador) ---
 
-            if (existingItem.isPresent()) {
-                CartItem item = existingItem.get();
-                // Si la cantidad es mayor a 1, la disminuimos
-                if (item.getCantidad() > 1) {
-                    item.setCantidad(item.getCantidad() - 1); // Disminuye en 1
-                } else {
-                    // Si la cantidad es 1, al disminuirla la eliminamos por completo
-                    removeItem(productoId); // Llama al método de eliminación total
-                }
-            }
-        }
+    /**
+     * Obtiene todos los items del carrito del usuario logueado.
+     * @param userEmail El email (Principal.getName()) del usuario logueado.
+     */
+    public List<CarritoItem> getItems(String userEmail) {
+        Usuario usuario = getUsuario(userEmail);
+        Carrito carrito = getOrCreateCarrito(usuario);
+        return carrito.getItems();
+    }
 
-        // ----------------------------------------------------
-        // MÉTODO DE ELIMINACIÓN TOTAL DE LÍNEA
-        // ----------------------------------------------------
-        public void removeItem(Long productoId) {
-            // Elimina la única línea que contiene ese productoId
-            items.removeIf(item -> item.getProducto().getId().equals(productoId));
-        }
+    /**
+     * Añade un producto al carrito persistente.
+     * Si el producto ya existe, incrementa la cantidad.
+     * @param producto El Producto a añadir.
+     * @param cantidad La cantidad a añadir.
+     * @param userEmail El email del usuario logueado.
+     */
+    @Transactional
+    public void addItem(Producto producto, int cantidad, String userEmail) {
+        Usuario usuario = getUsuario(userEmail);
+        Carrito carrito = getOrCreateCarrito(usuario);
 
-        // ----------------------------------------------------
-        // MÉTODOS DE LECTURA
-        // ----------------------------------------------------
-        public List<CartItem> getItems() {
-            return items;
-        }
+        // 1. Verificar si el item (producto) ya existe en este carrito
+        Optional<CarritoItem> itemExistente = carritoItemRepository.findByCarritoAndProducto(carrito, producto);
 
-        public int getTotalQuantity() {
-            return items.stream().mapToInt(CartItem::getCantidad).sum();
+        if (itemExistente.isPresent()) {
+            // 2. Si existe, actualizar la cantidad
+            CarritoItem item = itemExistente.get();
+            item.setCantidad(item.getCantidad() + cantidad);
+            carritoItemRepository.save(item); // Guarda el item actualizado
+        } else {
+            // 3. Si no existe, crear un nuevo CarritoItem
+            CarritoItem nuevoItem = new CarritoItem();
+            nuevoItem.setCarrito(carrito);
+            nuevoItem.setProducto(producto);
+            nuevoItem.setCantidad(cantidad);
+            carritoItemRepository.save(nuevoItem); // Guarda el nuevo item
         }
     }
+
+    /**
+     * Incrementa la cantidad de un producto en el carrito.
+     */
+    @Transactional
+    public void increaseQuantity(Long productoId, String userEmail) {
+        Usuario usuario = getUsuario(userEmail);
+        Carrito carrito = getOrCreateCarrito(usuario);
+
+        Optional<CarritoItem> itemOpt = carrito.getItems().stream()
+                .filter(item -> item.getProducto().getId().equals(productoId))
+                .findFirst();
+
+        if (itemOpt.isPresent()) {
+            CarritoItem item = itemOpt.get();
+            item.setCantidad(item.getCantidad() + 1);
+            carritoItemRepository.save(item);
+        }
+    }
+
+    /**
+     * Disminuye la cantidad. Si llega a 0, elimina el item.
+     */
+    @Transactional
+    public void decreaseQuantity(Long productoId, String userEmail) {
+        Usuario usuario = getUsuario(userEmail);
+        Carrito carrito = getOrCreateCarrito(usuario);
+
+        Optional<CarritoItem> itemOpt = carrito.getItems().stream()
+                .filter(item -> item.getProducto().getId().equals(productoId))
+                .findFirst();
+
+        if (itemOpt.isPresent()) {
+            CarritoItem item = itemOpt.get();
+            if (item.getCantidad() > 1) {
+                item.setCantidad(item.getCantidad() - 1);
+                carritoItemRepository.save(item);
+            } else {
+                // Si la cantidad es 1, eliminamos el item
+                carrito.getItems().remove(item); // Quita de la lista en memoria
+                carritoItemRepository.delete(item); // Borra de la BD
+            }
+        }
+    }
+
+    /**
+     * Elimina una línea de producto completa del carrito, sin importar la cantidad.
+     */
+    @Transactional
+    public void removeItem(Long productoId, String userEmail) {
+        Usuario usuario = getUsuario(userEmail);
+        Carrito carrito = getOrCreateCarrito(usuario);
+
+        Optional<CarritoItem> itemOpt = carrito.getItems().stream()
+                .filter(item -> item.getProducto().getId().equals(productoId))
+                .findFirst();
+
+        if (itemOpt.isPresent()) {
+            CarritoItem item = itemOpt.get();
+            carrito.getItems().remove(item);
+            carritoItemRepository.delete(item);
+        }
+    }
+
+    /**
+     * Calcula el total de items (para el contador del header).
+     */
+    public int getTotalQuantity(String userEmail) {
+        if (userEmail == null) {
+            return 0; // Si no hay usuario logueado, el carrito es 0
+        }
+        try {
+            Usuario usuario = getUsuario(userEmail);
+            Carrito carrito = getOrCreateCarrito(usuario);
+            // Suma la cantidad de cada línea de item
+            return carrito.getItems().stream().mapToInt(CarritoItem::getCantidad).sum();
+        } catch (UsernameNotFoundException e) {
+            return 0; // Usuario no encontrado (raro, pero seguro)
+        }
+    }
+
+    /**
+     * Calcula el precio total del carrito.
+     */
+    public BigDecimal getTotalPrice(String userEmail) {
+        if (userEmail == null) {
+            return BigDecimal.ZERO;
+        }
+        try {
+            Usuario usuario = getUsuario(userEmail);
+            Carrito carrito = getOrCreateCarrito(usuario);
+
+            BigDecimal total = BigDecimal.ZERO;
+            for (CarritoItem item : carrito.getItems()) {
+                BigDecimal subtotal = item.getProducto().getPrecio()
+                        .multiply(new BigDecimal(item.getCantidad()));
+                total = total.add(subtotal);
+            }
+            return total;
+        } catch (UsernameNotFoundException e) {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    /**
+     * Limpia el carrito (usado después del checkout).
+     */
+    @Transactional
+    public void clearCart(String userEmail) {
+        Usuario usuario = getUsuario(userEmail);
+        Optional<Carrito> carritoOpt = carritoRepository.findByUsuario(usuario);
+
+        if (carritoOpt.isPresent()) {
+            Carrito carrito = carritoOpt.get();
+            // Borra todos los items asociados a este carrito
+            carritoItemRepository.deleteAll(carrito.getItems());
+            carrito.getItems().clear();
+            carritoRepository.save(carrito);
+        }
+    }
+}

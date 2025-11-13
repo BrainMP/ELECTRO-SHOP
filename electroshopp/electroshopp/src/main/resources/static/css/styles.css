@@ -165,6 +165,32 @@ a:hover {
 }
 
 /* =========================================
+   ESTILOS DEL ICONO DEL CARRITO
+   ========================================= */
+
+/* Ajusta el enlace del carrito para que sea flex y alinee el ícono */
+.cart-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+}
+
+/* Estilo para la imagen del icono del carrito (¡AÑADE ESTO!) */
+.cart-icon-img {
+    height: 42px;
+    width: 42px;
+    object-fit: contain;
+    border-radius: 50%; /* <-- ¡AÑADE ESTA LÍNEA! */
+}
+
+/* Mantenemos el color naranja para el número del contador */
+.cart-link span {
+    font-weight: bold;
+    color: #ff6600;
+}
+
+/* =========================================
    ESTILOS DEL FOOTER
    ========================================= */
 .footer-steren {
@@ -702,6 +728,169 @@ a:hover {
             margin-top: 20px;
         }
 
+        /* =========================================
+               ESTILOS DEL MENÚ DESPLEGABLE DE USUARIO
+               ========================================= */
+
+            /* Contenedor relativo para anclar el menú */
+            .user-menu-container {
+                position: relative;
+                display: inline-block;
+            }
+
+            /* Botón que contiene el ícono de torso */
+            .user-menu-trigger {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* La imagen del ícono (torso) */
+            .user-icon-img {
+                height: 38px;
+                width: 38px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 1px solid #ddd;
+            }
+
+            /* El menú desplegable (oculto por defecto) */
+            .user-menu-dropdown {
+                display: none;
+
+                position: absolute;
+                top: 120%; /* Posición debajo del ícono */
+                right: 0;
+                min-width: 220px; /* Ancho del menú */
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
+                border: 1px solid #eee;
+                text-align: left; /* Asegura alineación izquierda del texto */
+            }
+
+            /* Clase que añade el JS para mostrar el menú */
+            .user-menu-dropdown.is-active {
+                display: block;
+            }
+
+            /* Estilos internos del menú */
+            .user-menu-dropdown .dropdown-header {
+                padding: 15px 20px;
+                border-bottom: 1px solid #f0f0f0;
+                color: #333;
+            }
+
+            .user-menu-dropdown .dropdown-links {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .user-menu-dropdown .dropdown-links li a {
+                display: block;
+                padding: 12px 20px;
+                text-decoration: none;
+                color: #0056b3;
+                font-size: 0.95em;
+            }
+            .user-menu-dropdown .dropdown-links li a:hover {
+                background-color: #f8f8f8;
+            }
+
+            .user-menu-dropdown .dropdown-footer {
+                padding: 10px 20px;
+                background-color: #f9f9f9;
+                border-top: 1px solid #f0f0f0;
+            }
+
+            /* Botón de Cerrar Sesión (dentro del menú) */
+            .btn-logout {
+                background: none;
+                border: none;
+                color: #d9534f; /* Color rojo */
+                cursor: pointer;
+                padding: 5px 0;
+                font-size: 0.9em;
+                font-weight: 500;
+            }
+            .btn-logout:hover {
+                text-decoration: underline;
+            }
+        }
+
+       /* =========================================
+          ESTILOS PARA ALERTAS (Tipo "Toast" Moderno)
+          ========================================= */
+
+       /* Definición de animaciones */
+       @keyframes fadeInDown {
+           from {
+               opacity: 0;
+               transform: translate(-50%, -30px);
+           }
+           to {
+               opacity: 1;
+               transform: translate(-50%, 0);
+           }
+       }
+
+       @keyframes fadeOutUp {
+           from {
+               opacity: 1;
+               transform: translate(-50%, 0);
+           }
+           to {
+               opacity: 0;
+               transform: translate(-50%, -30px);
+           }
+       }
+
+       .alert {
+           position: fixed; /* Fija la alerta en la pantalla */
+           top: 120px; /* Justo debajo de tu barra de menú */
+           left: 50%;  /* Centrado horizontalmente */
+           transform: translateX(-50%); /* Ajuste fino del centrado */
+           z-index: 9999; /* Asegura que esté por encima de todo */
+
+           padding: 15px 25px;
+           margin-bottom: 20px;
+           border: none;
+           border-radius: 8px;
+           box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+           font-size: 1.1em;
+           font-weight: 500;
+
+           /* Animación de entrada */
+           animation: fadeInDown 0.5s ease-out;
+       }
+
+       /* Clase que añadirá JavaScript para la salida */
+       .alert-fade-out {
+           animation: fadeOutUp 0.5s ease-in forwards;
+       }
+
+       .alert-danger {
+           color: #fff;
+           background-color: #d9534f; /* Rojo sólido */
+       }
+
+       .alert-success {
+           color: #fff;
+           background-color: #28a745; /* Verde sólido (como el botón de pago) */
+       }
+
+       .alert-info {
+           color: #fff;
+           background-color: #0056b3; /* Azul primario */
+       }
+
 /* =========================================
    MEDIA QUERIES (RESPONSIVE DESIGN)
    ========================================= */
@@ -869,4 +1058,3 @@ a:hover {
     .delivery-option-btn {
         max-width: 100% !important;
     }
-}

@@ -2,13 +2,17 @@ package com.electroshop.model;
 
 import jakarta.persistence.*; // Asegúrate de tener todos los imports de 'jakarta.persistence'
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "categorias")
-public class Categoria {
+public class Categoria implements Serializable {
 
-    // ----------------------------------------------------
+    private static final long serialVersionUID = 1L;
+
+
     // ¡LA CORRECCIÓN ESTÁ AQUÍ!
-    // ----------------------------------------------------
+
     @Id // 1. Marca este campo como la LLAVE PRIMARIA
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 2. Le dice a MySQL que genere el valor automáticamente (AUTO_INCREMENT)
     private Long id;

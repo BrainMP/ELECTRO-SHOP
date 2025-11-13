@@ -71,4 +71,52 @@ document.addEventListener('DOMContentLoaded', () => {
             searchBarContainer.classList.remove('is-focused');
         });
     }
+
+    // ------------------------------------------------------------------
+    // --- 4. FUNCIÓN DE MENÚ DESPLEGABLE DE USUARIO
+    // ------------------------------------------------------------------
+    const userMenuTrigger = document.getElementById('user-menu-trigger');
+    const userMenuDropdown = document.getElementById('user-menu-dropdown');
+
+    if (userMenuTrigger && userMenuDropdown) {
+
+        userMenuTrigger.addEventListener('click', (event) => {
+            // Detiene el clic para que el 'window' listener no lo cierre
+            event.stopPropagation();
+            // Muestra u oculta el menú
+            userMenuDropdown.classList.toggle('is-active');
+        });
+
+        // Cierra el menú si el usuario hace clic en CUALQUIER OTRO LUGAR
+        window.addEventListener('click', () => {
+            if (userMenuDropdown.classList.contains('is-active')) {
+                userMenuDropdown.classList.remove('is-active');
+            }
+        });
+
+        // Evita que el menú se cierre si haces clic DENTRO de él
+        userMenuDropdown.addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+    }
+
+
+    // --- 5. LÓGICA PARA CERRAR ALERTAS "TOAST" AUTOMÁTICAMENTE
+
+    const flashAlert = document.querySelector('.alert-success, .alert-danger, .alert-info');
+
+    if (flashAlert) {
+        // 1. Esperar 4 segundos (4000 milisegundos)
+        setTimeout(() => {
+
+            // 2. Aplicar la animación de salida
+            flashAlert.style.animation = 'fadeOutUp 0.5s ease-in forwards';
+
+            // 3. Esperar a que termine la animación (0.5s) y quitar el elemento del DOM
+            setTimeout(() => {
+                flashAlert.remove();
+            }, 500); // 500ms = 0.5s
+
+        }, 4000); // 4000ms = 4 segundos
+    }
 });

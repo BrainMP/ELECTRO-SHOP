@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
+import java.util.Optional;
+
 @Controller
 public class AuthController {
 
@@ -70,5 +73,56 @@ public class AuthController {
         // 5. Redirigir al Login con un mensaje de éxito
         redirectAttributes.addFlashAttribute("success", "¡Cuenta creada con éxito! Por favor, inicia sesión.");
         return "redirect:/login";
+    }
+
+    // -----------------------------------------------------------------
+    // MÉTODO NUEVO: MOSTRAR LA PÁGINA DE "EDITAR PERFIL"
+    // -----------------------------------------------------------------
+    @GetMapping("/perfil")
+    public String showProfilePage(Model model, Principal principal) {
+
+        // (1) Obtener el email del usuario logueado
+        String email = principal.getName();
+
+        // (2) Buscar el usuario en la base de datos
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
+
+        if (usuarioOpt.isEmpty()) {
+            // Manejar error si el usuario no se encuentra (aunque debería)
+            return "redirect:/login?error=Usuario no encontrado";
+        }
+
+        // (3) Enviar el objeto Usuario completo a la vista
+        model.addAttribute("usuario", usuarioOpt.get());
+
+        return "perfil"; // (4) Busca el archivo templates/perfil.html
+    }
+
+    // -----------------------------------------------------------------
+    // MÉTODO NUEVO: PROCESAR LA ACTUALIZACIÓN DEL PERFIL
+    @PostMapping("/perfil/actualizar")
+    public String updateProfile(
+            @RequestParam String nombre,
+            Principal principal,
+            RedirectAttributes redirectAttributes
+    ) {
+        String email = principal.getName();
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
+
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+
+            // (1) Actualizar el nombre
+            usuario.setNombre(nombre);
+
+            // (2) Guardar los cambios en la BD
+            usuarioRepository.save(usuario);
+
+            redirectAttributes.addFlashAttribute("success", "¡Perfil actualizado con éxito!");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Error al actualizar el perfil.");
+        }
+
+        return "redirect:/perfil"; // Redirige de vuelta a la página de perfil
     }
 }

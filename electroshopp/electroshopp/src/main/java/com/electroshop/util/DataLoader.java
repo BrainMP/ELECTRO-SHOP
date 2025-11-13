@@ -1,7 +1,11 @@
+
 package com.electroshop.util;
 
 import com.electroshop.model.Categoria;
 import com.electroshop.model.Producto;
+// (1) IMPORTAR LOS NUEVOS REPOSITORIOS
+import com.electroshop.repository.CarritoItemRepository;
+import com.electroshop.repository.CarritoRepository;
 import com.electroshop.repository.CategoriaRepository;
 import com.electroshop.repository.ProductoRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -19,6 +23,13 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private ProductoRepository productoRepository;
+
+    // (2) INYECTAR LOS NUEVOS REPOSITORIOS
+    @Autowired
+    private CarritoItemRepository carritoItemRepository;
+
+    @Autowired
+    private CarritoRepository carritoRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -39,7 +50,6 @@ public class DataLoader implements CommandLineRunner {
                 "Electrónica y automatización"
         );
         for (String nombre : nombresCategorias) {
-            // Utilizamos findByNombre para evitar duplicados
             if (categoriaRepository.findByNombre(nombre) == null) {
                 categoriaRepository.save(new Categoria(nombre));
             }
@@ -49,8 +59,18 @@ public class DataLoader implements CommandLineRunner {
 
     // FUNCIÓN PARA CARGAR 2 PRODUCTOS POPULARES POR CADA CATEGORÍA
     private void cargarProductosEjemplo() {
-        // Limpiamos los productos viejos.
+
+        // ----------------------------------------------------
+        // (3) ¡LA SOLUCIÓN! ORDEN DE BORRADO CORREGIDO
+        // ----------------------------------------------------
+        // Borramos los items del carrito PRIMERO (la fila "hija")
+        carritoItemRepository.deleteAll();
+        // Borramos los carritos (la fila "madre" de los items)
+        carritoRepository.deleteAll();
+
+        // Ahora sí podemos borrar los productos (la otra fila "madre")
         productoRepository.deleteAll();
+        // ----------------------------------------------------
 
         System.out.println("Cargando 16 productos con nombres populares y reales...");
 
@@ -64,7 +84,6 @@ public class DataLoader implements CommandLineRunner {
 
         System.out.println("DEBUG: Se encontraron " + categorias.size() + " categorías para poblar.");
 
-        // imageCounter irá de 1 a 16 para las rutas locales /images/prod-X.jpg
         long imageCounter = 1;
 
         for (Categoria categoria : categorias) {
@@ -160,4 +179,3 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("Carga masiva de 16 productos completada.");
     }
 }
-

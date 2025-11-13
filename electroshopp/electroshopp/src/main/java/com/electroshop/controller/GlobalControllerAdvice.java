@@ -1,16 +1,16 @@
 package com.electroshop.controller;
 
 import com.electroshop.model.Categoria;
-import com.electroshop.model.Usuario; // (1) IMPORTAR MODELO USUARIO
+import com.electroshop.model.Usuario;
 import com.electroshop.repository.CategoriaRepository;
-import com.electroshop.repository.UsuarioRepository; // (2) IMPORTAR REPOSITORIO USUARIO
-import com.electroshop.service.CartService;
+import com.electroshop.repository.UsuarioRepository;
+import com.electroshop.service.CartService; // Asegúrate de importar el CartService v2
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.security.Principal; // (3) IMPORTAR PRINCIPAL (para saber quién está logueado)
+import java.security.Principal; // (1) IMPORTAR PRINCIPAL
 import java.util.List;
 import java.util.Optional;
 
@@ -24,36 +24,37 @@ public class GlobalControllerAdvice {
     private CartService cartService;
 
     @Autowired
-    private UsuarioRepository usuarioRepository; // (4) INYECTAR REPOSITORIO USUARIO
+    private UsuarioRepository usuarioRepository;
 
     @ModelAttribute
-    public void addGlobalAttributes(Model model, Principal principal) { // (5) AÑADIR PRINCIPAL
+    public void addGlobalAttributes(Model model, Principal principal) { // (2) INYECTAR PRINCIPAL
 
-        // Cargar categorías (esto ya lo tenías)
+        // Cargar categorías (esto se mantiene igual)
         List<Categoria> categorias = categoriaRepository.findAll();
         model.addAttribute("categoriasGlobal", categorias);
 
-        // Cargar contador del carrito (esto ya lo tenías)
-        model.addAttribute("cartItemCount", cartService.getTotalQuantity());
-
-
-        // (6) NUEVA LÓGICA: BUSCAR EL NOMBRE DEL USUARIO
-
+        String email = null;
         if (principal != null) {
-            // Si el usuario está logueado (principal no es null)
-            String email = principal.getName(); // Obtenemos el email (username)
+            email = principal.getName(); // Obtenemos el email si está logueado
+        }
 
-            // Buscamos el usuario en la BD
+        // ----------------------------------------------------
+        // (3) CAMBIO CLAVE: Lógica del Contador de Carrito
+        // ----------------------------------------------------
+        // El contador ahora usa el email. Si el email es null (anónimo),
+        // el servicio devolverá 0.
+        model.addAttribute("cartItemCount", cartService.getTotalQuantity(email));
+
+        // ----------------------------------------------------
+        // (4) CAMBIO CLAVE: Lógica del Nombre de Usuario
+        // ----------------------------------------------------
+        if (email != null) {
             Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
-
             if (usuarioOpt.isPresent()) {
-                // Si lo encontramos, añadimos su nombre al modelo
                 model.addAttribute("usuarioNombre", usuarioOpt.get().getNombre());
             } else {
-                // Si por alguna razón no está en la BD, mostramos el email
-                model.addAttribute("usuarioNombre", email);
+                model.addAttribute("usuarioNombre", email); // Fallback
             }
         }
-        // Si principal es null (anónimo), no se añade "usuarioNombre"
     }
 }

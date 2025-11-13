@@ -1,47 +1,60 @@
 <header th:fragment="header" class="header-steren"
         xmlns:th="http://www.thymeleaf.org"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> <div class="header-top">
 
-    <div class="header-top">
+    <button id="menu-toggle" class="menu-toggle">
+        &#9776;
+    </button>
 
-        <button id="menu-toggle" class="menu-toggle">
-            &#9776; </button>
-
-        <div class="logo">
-            <a href="/" class="logo-link">
-                <img src="/images/electroshop-logo.png" alt="ELECTRO SHOP Logo" class="main-logo">
-            </a>
-        </div>
-
-        <form action="/" method="GET" class="search-bar">
-            <input type="text" name="q" placeholder="Buscar en toda la tienda...">
-            <button type="submit" class="search-btn">🔍</button>
-        </form>
-
-        <div class="user-links">
-
-            <a href="/login" class="user-link" sec:authorize="isAnonymous()">
-                Iniciar sesión
-            </a>
-
-            <div sec:authorize="isAuthenticated()">
-            <span style="padding-right: 10px; color: #555;">
-                    Hola, <span th:text="${usuarioNombre}" style="font-weight: bold;"></span>
-                </span>
-
-                <form th:action="@{/logout}" method="POST" style="display: inline;">
-                    <button type="submit" class="user-link" style="background:none; border:none; color:#0056b3; cursor:pointer; text-decoration: underline; padding:0; font-size: inherit;">
-                        Cerrar Sesión
-                    </button>
-                </form>
-                </form>
-            </div>
-
-            <a th:href="@{/cart}" class="cart-link">
-                🛒 (<span th:text="${cartItemCount}">0</span>)
-            </a>
-        </div>
+    <div class="logo">
+        <a href="/" class="logo-link">
+            <img src="/images/electroshop-logo.png" alt="ELECTRO SHOP Logo" class="main-logo">
+        </a>
     </div>
+
+    <form action="/" method="GET" class="search-bar">
+        <input type="text" name="q" placeholder="Buscar en toda la tienda...">
+        <button type="submit" class="search-btn">🔍</button>
+    </form>
+
+    <div class="user-links">
+
+        <a href="/login" class="user-link" sec:authorize="isAnonymous()">
+            Iniciar sesión
+        </a>
+
+        <div sec:authorize="isAuthenticated()" class="user-menu-container">
+
+            <button id="user-menu-trigger" class="user-menu-trigger">
+                <img src="/images/usuario-logo.png" alt="Mi Cuenta" class="user-icon-img">
+            </button>
+
+            <div id="user-menu-dropdown" class="user-menu-dropdown">
+                <div class="dropdown-header">
+                    Hola, <strong th:text="${usuarioNombre}">Usuario</strong>
+                </div>
+                <ul class="dropdown-links">
+                    <li>
+                        <a th:href="@{/perfil}">Editar Nombre</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/pedidos}">Mis Pedidos</a>
+                    </li>
+                </ul>
+                <div class="dropdown-footer">
+                    <form th:action="@{/logout}" method="POST">
+                        <button type="submit" class="btn-logout">Cerrar Sesión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <a th:href="@{/cart}" class="cart-link">
+            <img src="/images/logo-carrito.png" alt="Carrito" class="cart-icon-img">
+            (<span th:text="${cartItemCount}">0</span>)
+        </a>
+    </div>
+</div>
 
     <div id="main-menu" class="main-menu-container">
         <nav class="main-nav">

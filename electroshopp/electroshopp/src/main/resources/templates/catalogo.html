@@ -12,6 +12,8 @@
 </div>
 
 <main class="container">
+    <div th:if="${pedidoExitoso}" class="alert alert-success" th:text="${pedidoExitoso}"></div>
+    <div th:if="${pedidoError}" class="alert alert-danger" th:text="${pedidoError}"></div>
     <h1 th:text="${titulo}">Catálogo de Productos Eléctricos</h1>
 
     <div class="productos-grid">
@@ -24,6 +26,7 @@
                     <p class="producto-nombre" th:text="${producto.nombre}"></p>
                     <p class="producto-modelo" th:text="${producto.modelo}"></p>
                     <p class="producto-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 1, 2)}"></p>
+                    <p class="iva-incluido">IVA Incluido</p>
                 </div>
             </a>
 

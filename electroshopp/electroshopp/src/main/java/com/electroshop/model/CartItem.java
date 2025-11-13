@@ -5,6 +5,8 @@ import java.io.Serializable;
 
 public class CartItem implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     // Campo 1: El objeto Producto que se está comprando
     private Producto producto;
 

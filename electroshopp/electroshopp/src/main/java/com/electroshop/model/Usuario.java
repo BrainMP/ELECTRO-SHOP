@@ -2,9 +2,13 @@ package com.electroshop.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "usuarios") // Define el nombre de la tabla en MySQL
-public class Usuario {
+public class Usuario implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

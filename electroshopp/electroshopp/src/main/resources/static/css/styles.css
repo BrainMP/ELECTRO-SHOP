@@ -249,8 +249,43 @@ a:hover {
 .footer-content {
     transition: max-height 0.3s ease-out, opacity 0.3s;
 }
+/* =========================================
+   ESTILOS DE REDES SOCIALES (FOOTER) - CORREGIDO
+   ========================================= */
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    max-height: 100px;
+    opacity: 1;
+}
+
+/* * Selector más específico para anular la regla ".footer-col a"
+ * y asegurar que el ícono sea blanco.
+ */
+.footer-col .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #555; /* Fondo gris */
+    color: white; /* Color del ícono (blanco) */
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.social-icon:hover {
+    background-color: #ff6600; /* Fondo naranja */
+    transform: scale(1.1);
+    color: white; /* El ícono se mantiene blanco */
+}
 
 .footer-bottom {
+    flex-basis: 100%;
     text-align: center;
     margin-top: 30px;
     padding-top: 15px;
@@ -258,6 +293,7 @@ a:hover {
     color: #777;
     font-size: 0.8em;
 }
+
 
 /* =========================================
    ESTILOS DE PRODUCTO (Catálogo)
@@ -338,6 +374,24 @@ a:hover {
 }
 .btn-comprar:hover {
     background-color: #e65c00;
+}
+
+/* =========================================
+   ESTILO PARA "IVA INCLUIDO" EN CATÁLOGO
+   ========================================= */
+
+.producto-precio {
+     margin-bottom: 8px; /* Asegura que el precio no esté pegado al texto de IVA */
+}
+
+.iva-incluido {
+    /* Color verde (como el botón de "Proceder al Pago") */
+    color: #28a745;
+    font-size: 0.85em; /* Pequeño pero legible */
+    font-weight: 500;
+    margin-top: -8px;  /* Sube el texto para pegarlo al precio */
+    margin-bottom: 10px; /* Espacio antes del final de la tarjeta */
+    text-align: center; /* Asegura que esté centrado */
 }
 
 /* =========================================

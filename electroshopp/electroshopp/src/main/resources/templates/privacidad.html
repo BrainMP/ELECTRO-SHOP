@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Política de Privacidad - ELECTRO SHOP</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/info-pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="info-page-container">
+
+    <div class="info-page-header">
+        <h1>Política de Privacidad</h1>
+        <p class="intro-text">
+            Esta política tiene como objetivo cumplir con la normativa legal vigente en México y generar confianza
+            al informar claramente cómo recopilamos, utilizamos y protegemos los datos personales de nuestros clientes.
+        </p>
+    </div>
+
+    <div class="info-content">
+
+        <!-- ===================== SECCIÓN I ===================== -->
+        <h3 class="titulo-seccion">I. Identidad y Domicilio del Responsable</h3>
+
+        <p class="content-paragraph">
+            El responsable del tratamiento y protección de sus datos personales es <strong>ELECTRO SHOP</strong>,
+            una marca perteneciente a <strong>electroshop</strong>, con domicilio para oír y recibir
+            notificaciones en <strong>Predio Tetenco, Colonia Centro, en el pueblo de San Miguel Topilejo, Tlalpan, CDMX</strong>.
+        </p>
+
+        <!-- ===================== SECCIÓN II ===================== -->
+        <h3 class="titulo-seccion">II. Datos Personal Recabados</h3>
+
+        <p class="content-paragraph">
+            ELECTRO SHOP recaba los siguientes datos personales con el propósito de operar correctamente nuestro
+            servicio de comercio electrónico:
+        </p>
+
+        <p class="content-paragraph">
+            <strong>Identificación y Contacto:</strong> Nombre completo, correo electrónico y número de teléfono.
+        </p>
+
+        <p class="content-paragraph">
+            <strong>Domiciliación:</strong> Dirección completa de envío y, en caso necesario, datos fiscales para facturación.
+        </p>
+
+        <p class="content-paragraph">
+            <strong>Datos de Navegación:</strong> Información sobre su actividad dentro del sitio, tal como historial
+            de pedidos, contenido del carrito y preferencias de navegación.
+        </p>
+
+        <!-- ===================== SECCIÓN III ===================== -->
+        <h3 class="titulo-seccion">III. Finalidades del Tratamiento de Datos</h3>
+
+        <p class="content-paragraph">
+            Sus datos personales serán utilizados para las siguientes finalidades primarias y necesarias:
+        </p>
+
+        <p class="content-paragraph">
+            • Procesamiento, envío, facturación y seguimiento de pedidos.<br>
+            • Gestión y control de su cuenta de usuario y acceso a la plataforma.<br>
+            • Mantenimiento del estado de su carrito de compras y la cantidad total de ítems en sesión.
+        </p>
+
+        <!-- ===================== SECCIÓN IV ===================== -->
+        <h3 class="titulo-seccion">IV. Uso de Mecanismos de Seguimiento (Cookies)</h3>
+
+        <p class="content-paragraph">
+            ELECTRO SHOP utiliza cookies de sesión y otras tecnologías de seguimiento con las siguientes finalidades:
+        </p>
+
+        <p class="content-paragraph">
+            • Mantener temporalmente los productos que ha agregado a su carrito.<br>
+            • Mejorar la navegación, velocidad y personalización del sitio.<br>
+            • Presentar contenido dinámico generado mediante el motor de plantillas Thymeleaf.
+        </p>
+
+        <!-- ===================== SECCIÓN V ===================== -->
+        <h3 class="titulo-seccion">V. Derechos ARCO (Acceso, Rectificación, Cancelación y Oposición)</h3>
+
+        <p class="content-paragraph">
+            Usted tiene derecho a:
+        </p>
+
+        <p class="content-paragraph">
+            • Acceder a sus datos personales.<br>
+            • Rectificarlos si son inexactos o están desactualizados.<br>
+            • Cancelarlos si considera que no son necesarios para las finalidades previstas.<br>
+            • Oponerse al tratamiento cuando existan causas legítimas.
+        </p>
+
+        <p class="content-paragraph">
+            Para ejercer cualquiera de estos derechos ARCO, deberá enviar una solicitud formal a:
+            <strong>privacidad@electroshop.com</strong>
+        </p>
+
+    </div>
+
+    <div class="back-to-home">
+        <a th:href="@{/}" class="btn-back">← Volver al Inicio</a>
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

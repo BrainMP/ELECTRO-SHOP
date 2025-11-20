@@ -50,7 +50,7 @@ public class CartController {
         cartService.addItem(producto, cantidad, email);
 
         redirectAttributes.addFlashAttribute("mensaje", "¡Producto añadido al carrito con éxito!");
-        return "redirect:/";
+        return "redirect:/producto/" + productoId;
     }
 
     // ----------------------------------------------------

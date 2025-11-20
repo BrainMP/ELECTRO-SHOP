@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Garantías - ELECTRO SHOP</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/info-pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="info-page-container">
+
+    <div class="info-page-header">
+        <h1>Información de Garantías</h1>
+        <p class="intro-text">
+            La Póliza de Garantía es el documento contractual que respalda la calidad de los productos
+            electrónicos básicos vendidos por ElectroShop. En cumplimiento con la normativa, esta póliza es clara, accesible y garantiza al consumidor la protección de sus derechos.
+        </p>
+    </div>
+
+    <div class="info-content">
+
+        <!-- ===================== SECCIÓN I ===================== -->
+        <h3 class="titulo-seccion">I. Alcance y Vigencia de la Garantía</h3>
+
+        <p class="content-paragraph">
+            <strong>1. Vigencia Mínima Legal:</strong> Todo producto electrónico vendido por ElectroShop cuenta
+            con una garantía mínima legal de 90 días naturales contra defectos de fabricación o fallas
+            ocultas, contados a partir de la recepción del producto por parte del consumidor. Cualquier
+            extensión adicional será indicada en la póliza particular del producto.
+        </p>
+
+        <p class="content-paragraph">
+            <strong>2. Identificación del Responsable:</strong> La póliza debe especificar claramente el nombre,
+            domicilio y datos de contacto de ElectroShop como proveedor responsable.
+        </p>
+
+        <p class="content-paragraph">
+            <strong>3. Productos Importados:</strong> Si ElectroShop distribuye productos importados, la información
+            debe incluir el lugar de origen, los centros autorizados de reparación e instrucciones completas
+            para su uso.
+        </p>
+
+        <!-- ===================== SECCIÓN II ===================== -->
+        <h3 class="titulo-seccion">II. Procedimiento para Hacer Válida la Garantía</h3>
+
+        <p class="content-paragraph">
+            Si un producto adquirido en ElectroShop presenta una falla durante la vigencia de la garantía,
+            el consumidor tiene derecho a contactar de inmediato al proveedor para solicitar su aplicación.
+        </p>
+
+        <p class="content-paragraph">
+            El consumidor podrá ejercer su derecho de garantía en el domicilio donde adquirió el bien o en
+            cualquier otro lugar especificado en la póliza correspondiente.
+        </p>
+
+        <!-- ===================== SECCIÓN III ===================== -->
+        <h3 class="titulo-seccion">III. Opciones de Cumplimiento de la Garantía</h3>
+
+        <p class="content-paragraph">
+            Una vez confirmada la falla cubierta por la garantía, el consumidor podrá elegir entre las
+            siguientes opciones:
+        </p>
+
+        <p class="content-paragraph">
+            <strong>1. Reparación:</strong> El producto será reparado sin costo. Ningún cobro adicional será aplicado
+            durante la vigencia de la garantía. Las piezas sustituidas deben ser originales.
+        </p>
+
+        <p class="content-paragraph">
+            <strong>2. Sustitución:</strong> El producto defectuoso será reemplazado por uno nuevo con iguales o mejores
+            características.
+        </p>
+
+        <p class="content-paragraph">
+            <strong>3. Devolución del precio:</strong> Si la reparación o sustitución no son posibles, se devolverá
+            al consumidor el monto total pagado.
+        </p>
+
+        <!-- ===================== SECCIÓN IV ===================== -->
+        <h3 class="titulo-seccion">IV. Cobertura de Gastos Adicionales (Logística)</h3>
+
+        <p class="content-paragraph">
+            ElectroShop cubrirá los gastos necesarios erogados por el consumidor para hacer efectiva la garantía,
+            incluyendo costos de envío o traslado del producto al centro de servicio o domicilio de reparación.
+        </p>
+
+        <!-- ===================== SECCIÓN V ===================== -->
+        <h3 class="titulo-seccion">Política de Devoluciones y Desistimiento</h3>
+
+        <p class="content-paragraph">
+            <strong>Derecho de Desistimiento:</strong> ElectroShop proporcionará un formulario de desistimiento y
+            especificará los plazos y condiciones bajo los cuales el consumidor podrá devolver productos adquiridos
+            a distancia, conforme a la Ley Federal de Protección al Consumidor.
+        </p>
+
+        <!-- ===================== SECCIÓN VI ===================== -->
+        <h3 class="titulo-seccion">Plazos y Condiciones de Entrega (Envíos)</h3>
+
+        <p class="content-paragraph">
+            <strong>Compromiso de Plazo:</strong> Si al momento de la compra no se indica un plazo específico,
+            ElectroShop garantiza que la entrega se realizará en un máximo de 30 días naturales desde la fecha de
+            compra. Este plazo debe cumplirse rigurosamente.
+        </p>
+
+    </div>
+
+    <div class="back-to-home">
+        <a th:href="@{/}" class="btn-back">← Volver al Inicio</a>
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

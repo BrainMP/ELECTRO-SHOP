@@ -13,7 +13,7 @@
 <main class="cart-container">
 
     <div th:if="${items.isEmpty()}">
-        <p>Tu carrito está vacío. ¡Explora nuestros <a href="/">productos</a>!</p>
+        <p class="empty-cart-message">Tu carrito está vacío. ¡Explora nuestros <a th:href="@{/}" class="link-productos">productos</a>!</p>
     </div>
 
     <div th:unless="${items.isEmpty()}">

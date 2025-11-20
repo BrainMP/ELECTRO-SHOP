@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Términos y Condiciones - ELECTRO SHOP</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/info-pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="info-page-container">
+
+    <div class="info-page-header">
+        <h1>Términos y Condiciones</h1>
+        <p class="intro-text">
+            Este documento establece el marco legal y las reglas obligatorias aplicables a todo usuario que navegue
+            o realice compras dentro del sitio web de ELECTRO SHOP.
+        </p>
+    </div>
+
+    <div class="info-content">
+
+        <!-- ===================== SECCIÓN I ===================== -->
+        <h3 class="titulo-seccion">I. Aceptación y Alcance</h3>
+
+        <p class="content-paragraph">
+            El presente documento establece los Términos y Condiciones (T&amp;C) que rigen el uso del sitio web de
+            <strong>ELECTRO SHOP</strong>, una empresa 100% mexicana dedicada a proveer soluciones en material
+            eléctrico, iluminación y tecnología.
+        </p>
+
+        <p class="content-paragraph">
+            Al utilizar este portal, el usuario manifiesta su aceptación y sujeción a todas las disposiciones
+            contenidas en estos T&amp;C. Si el usuario no está de acuerdo con ellos, deberá abstenerse
+            inmediatamente de continuar utilizando el sitio.
+        </p>
+
+        <!-- ===================== SECCIÓN II ===================== -->
+        <h3 class="titulo-seccion">II. Uso del Sitio Web y Cuenta de Usuario</h3>
+
+        <p class="content-paragraph">
+            <strong>Registro:</strong> Para realizar una compra, el usuario puede crear una cuenta proporcionando datos
+            verídicos y actualizados. Será responsabilidad del usuario mantener la confidencialidad de su contraseña
+            y restringir el acceso a su equipo. ELECTRO SHOP no se hace responsable por el uso no autorizado de la
+            cuenta si el usuario no ejerció la debida diligencia.
+        </p>
+
+        <p class="content-paragraph">
+            <strong>Conducta:</strong> El usuario se compromete a no utilizar el sitio para actividades ilegales o que
+            vulneren los derechos de terceros. Se prohíbe la extracción o copia de contenido para reventa o uso
+            comercial sin autorización expresa de ELECTRO SHOP.
+        </p>
+
+        <!-- ===================== SECCIÓN III ===================== -->
+        <h3 class="titulo-seccion">III. Condiciones de Compra, Precios y Existencias</h3>
+
+        <p class="content-paragraph">
+            <strong>Moneda y Precios:</strong> Todos los precios publicados están en Pesos Mexicanos (MXN) e incluyen
+            el IVA. Los precios no incluyen gastos de envío ni seguros, excepto cuando se indique lo contrario.
+        </p>
+
+        <p class="content-paragraph">
+            <strong>Confirmación de Pedido:</strong> Un pedido se considera <em>confirmado</em> únicamente cuando
+            ELECTRO SHOP valida el pago y envía una confirmación electrónica al cliente.
+        </p>
+
+        <p class="content-paragraph">
+            <strong>Disponibilidad:</strong> La disponibilidad de productos (como cables, contactos y focos LED) se
+            muestra en tiempo real, pero puede variar. En caso de indisponibilidad posterior al pago, ELECTRO SHOP
+            notificará al cliente para ofrecer:
+            <br>• Sustitución por un producto similar,
+            <br>• o el reembolso total del importe pagado.
+        </p>
+
+        <!-- ===================== SECCIÓN IV ===================== -->
+        <h3 class="titulo-seccion">IV. Limitación de Responsabilidad y Advertencia</h3>
+
+        <p class="content-paragraph">
+            <strong>Naturaleza de los Productos:</strong> Los productos comercializados por ELECTRO SHOP son
+            materiales eléctricos que requieren conocimientos técnicos para su correcta instalación y manejo.
+        </p>
+
+        <p class="content-paragraph">
+            <strong>Deslinde:</strong> ELECTRO SHOP se deslinda de toda responsabilidad por daños materiales,
+            personales o a terceros derivados de:
+            <br>• incorrecta instalación,
+            <br>• manipulación inadecuada,
+            <br>• uso indebido de los productos,
+            <br>incluyendo cortocircuitos, variaciones de voltaje o accidentes eléctricos,
+            cuando estos no hayan sido instalados por personal calificado o sin seguir las normativas vigentes.
+        </p>
+
+    </div>
+
+    <div class="back-to-home">
+        <a th:href="@{/}" class="btn-back">← Volver al Inicio</a>
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

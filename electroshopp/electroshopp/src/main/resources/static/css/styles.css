@@ -376,6 +376,27 @@ a:hover {
     background-color: #e65c00;
 }
 
+/* Estilos para el mensaje de carrito vacío */
+.empty-cart-message {
+    /* Centrado y Espaciado */
+    text-align: center; /* Centra el texto horizontalmente */
+    padding: 80px 20px; /* Añade margen vertical para centrarlo visualmente */
+
+    /* Fuente */
+    font-size: 1.4em; /* Hace la letra 40% más grande que el texto base */
+    font-weight: 600; /* Letra semi-negrita para que destaque */
+    color: #333;
+}
+
+/* Estilo para el enlace dentro del mensaje (opcional, para mantener el color) */
+.empty-cart-message .link-productos {
+    color: #FF6600; /* Usando el color naranja de tu marca para el enlace */
+    text-decoration: none; /* Quitar el subrayado por defecto */
+}
+.empty-cart-message .link-productos:hover {
+    text-decoration: underline;
+}
+
 /* =========================================
    ESTILO PARA "IVA INCLUIDO" EN CATÁLOGO
    ========================================= */
@@ -386,12 +407,48 @@ a:hover {
 
 .iva-incluido {
     /* Color verde (como el botón de "Proceder al Pago") */
-    color: #28a745;
+    color: #000;
     font-size: 0.85em; /* Pequeño pero legible */
     font-weight: 500;
     margin-top: -8px;  /* Sube el texto para pegarlo al precio */
     margin-bottom: 10px; /* Espacio antes del final de la tarjeta */
     text-align: center; /* Asegura que esté centrado */
+}
+
+/* =========================================
+   ESTILOS ESPECÍFICOS DE LA PÁGINA DE DETALLE
+   ========================================= */
+
+.detalle-container {
+    /* La regla principal que usa Flexbox para la vista lateral */
+    display: flex;
+    gap: 40px;
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Añadido box-shadow para profesionalismo */
+}
+.detalle-img {
+    flex-basis: 40%;
+}
+.detalle-info {
+    flex-basis: 60%;
+}
+.precio-grande {
+    font-size: 2.8em;
+    color: #ff6600; /* Color naranja de acción/precio */
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.detalle-desc {
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 25px;
+}
+.modelo-stock {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
 }
 
 /* =========================================
@@ -563,7 +620,7 @@ a:hover {
 
 .discount-badge {
     font-size: 0.85em !important;
-    color: #28a745 !important;
+    color: #000!important;
     font-weight: 500 !important;
     padding: 8px 0 !important;
     font-style: italic !important;

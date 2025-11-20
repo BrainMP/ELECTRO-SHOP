@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo Digital - ELECTRO SHOP</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/info-pages.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="info-page-container">
+
+    <div class="info-page-header">
+        <h1>Catálogo Digital de Productos Eléctricos</h1>
+
+        <p class="intro-text">
+            Explore la Colección Completa de Material Eléctrico Esencial y la información técnica que garantiza su seguridad y confianza.
+        </p>
+    </div>
+
+    <div class="info-content">
+
+        <h3 class="section-subtitle">Funcionalidades Clave de Nuestro Catálogo</h3>
+
+        <h4 class="section-sub-title">1. Búsqueda y Navegación Interactiva (Online)</h4>
+
+        <p class="content-paragraph">
+            Puede consultar la versión dinámica y actualizada de todo nuestro inventario directamente en la sección principal de la tienda.
+        </p>
+        <p class="content-paragraph">
+            Utilice el Buscador de Productos en el encabezado para localizar artículos específicos, como sensores de movimiento, generadores portátiles o tipos de cableado THW, de manera rápida y eficiente.
+        </p>
+        <p class="content-paragraph">
+            Filtre la vista por Categoría, explorando grupos específicos como Iluminación, Aparatos de protección y control, o Motores y equipos electromecánicos (como se muestra en el menú inferior y en las categorías principales).
+        </p>
+
+        <h4 class="section-sub-title">2. Información Detallada del Producto</h4>
+        <p class="content-paragraph">
+            Aunque nuestro sitio web es la herramienta principal para la compra, la versión digital le garantiza que cada producto, desde un Foco LED A19 hasta un Panel Solar Monocristalino, cuenta con:
+        </p>
+        <p class="content-paragraph">
+            <strong>Descripciones Claras:</strong> Detalles sobre el uso y las aplicaciones típicas de cada material.
+        </p>
+        <p class="content-paragraph">
+            <strong>Especificaciones Técnicas:</strong> Voltaje, capacidad, modelo y datos relevantes para la instalación.
+        </p>
+        <p class="content-paragraph">
+            <strong>Imágenes Nítidas:</strong> Visualizaciones claras para asegurar que el artículo corresponde exactamente a su necesidad.
+        </p>
+
+        <h4 class="section-sub-title">3. Descarga para Consulta Offline (PDF)</h4>
+        <p class="content-paragraph">
+            Para mayor comodidad en obra o en sitios con baja conexión, puede descargar el archivo PDF que incluye la información consolidada de nuestra oferta actual. Esto garantiza que tenga acceso a los detalles y especificaciones técnicas de todos nuestros productos sin necesidad de estar conectado.
+        </p>
+
+        <div class="download-section">
+            <a th:href="@{/docs/catalogo-electroshop.pdf}"
+               download="Catalogo-ElectroShop-2025.pdf"
+               class="btn-action">
+                Descargar (PDF)
+            </a>
+        </div>
+
+    </div> <a th:href="@{/}" class="btn-back">← Volver a la Tienda Principal</a>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Añadir Tarjeta - ELECTRO SHOP</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container">
+    <div class="login-container">
+
+        <h1 class="login-title">Añadir Tarjeta</h1>
+
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <form th:action="@{/perfil/tarjetas/guardar}" method="POST">
+
+            <div class="form-group">
+                <label for="numero">Número de Tarjeta</label>
+                <input type="text" id="numero" name="numero" class="form-control"
+                       placeholder="XXXX XXXX XXXX 1234" maxlength="16" required>
+            </div>
+
+            <div style="display: flex; gap: 20px;">
+                <div class="form-group" style="flex: 1;">
+                    <label for="vencimiento">Vencimiento (MM/AA)</label>
+                    <input type="text" id="vencimiento" name="vencimiento" class="form-control"
+                           placeholder="MM/AA" maxlength="5" required>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" class="form-control"
+                           placeholder="123" maxlength="4" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="titular">Nombre del Titular</label>
+                <input type="text" id="titular" name="titular" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn-login">Guardar Tarjeta</button>
+        </form>
+
+        <div class="register-link">
+            <a th:href="@{/perfil}">← Volver al Perfil</a>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

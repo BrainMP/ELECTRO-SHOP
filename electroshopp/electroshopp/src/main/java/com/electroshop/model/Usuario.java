@@ -3,6 +3,7 @@ package com.electroshop.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios") // Define el nombre de la tabla en MySQL
@@ -25,6 +26,13 @@ public class Usuario implements Serializable {
 
     @Column(nullable = false, length = 20)
     private String role; // Almacenará "ROLE_USER" o "ROLE_ADMIN"
+
+    /**
+     * Relación Uno a Muchos: Un Usuario tiene Muchas Tarjetas.
+     * mappedBy: La clase Tarjeta es la dueña de esta relación (tiene el JoinColumn).
+     */
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Tarjeta> tarjetas; // LA LÍNEA NUEVA
 
     // --- Constructores ---
     public Usuario() {
@@ -78,5 +86,13 @@ public class Usuario implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Tarjeta> getTarjetas() { // GETTER NUEVO sobre la tarjeta
+        return tarjetas;
+    }
+
+    public void setTarjetas(List<Tarjeta> tarjetas) { // SETTER NUEVO sobre la tarjeta
+        this.tarjetas = tarjetas;
     }
 }

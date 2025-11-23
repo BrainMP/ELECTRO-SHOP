@@ -97,7 +97,7 @@ public class DataLoader implements CommandLineRunner {
             // --- LÓGICA DE ASIGNACIÓN DE NOMBRES Y DESCRIPCIONES REALES ---
 
             if (catNombre.equals("Generación y suministro de energía")) {
-                nombreBasico = "Generador de Gasolina Portátil 1500W";
+                nombreBasico = "Generador Elélocctrico de Gasolina Portátil 1500W";
                 descBasica = "Unidad compacta de respaldo, ideal para el hogar o camping. Arranque manual y tanque de 4 litros.";
                 nombrePremium = "Panel Solar Monocristalino 100W";
                 descPremium = "Alta eficiencia para sistemas aislados o interconexión a red. Certificación IP67 y marco de aluminio.";

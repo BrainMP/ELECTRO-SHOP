@@ -1,8 +1,11 @@
 package com.electroshop.controller;
 
+import com.electroshop.model.Tarjeta;
 import com.electroshop.model.Usuario;
+import com.electroshop.repository.TarjetaRepository;
 import com.electroshop.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -23,6 +27,10 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    // (1) INYECTAR EL REPOSITORIO DE TARJETAS
+    @Autowired
+    private TarjetaRepository tarjetaRepository;
+
     // -----------------------------------------------------------------
     // MÉTODO FALTANTE: MOSTRAR LA PÁGINA DE LOGIN
     // -----------------------------------------------------------------
@@ -32,7 +40,6 @@ public class AuthController {
      */
     @GetMapping("/login")
     public String showLoginForm(Model model) {
-        // (Opcional) Si tienes mensajes de éxito/error, Thymeleaf los maneja
         return "login"; // Busca el archivo templates/login.html
     }
 
@@ -76,30 +83,33 @@ public class AuthController {
     }
 
     // -----------------------------------------------------------------
-    // MÉTODO NUEVO: MOSTRAR LA PÁGINA DE "EDITAR PERFIL"
+    // MÉTODO MODIFICADO: MOSTRAR LA PÁGINA DE PERFIL Y CARGAR TARJETAS (Paso 6)
     // -----------------------------------------------------------------
     @GetMapping("/perfil")
     public String showProfilePage(Model model, Principal principal) {
 
-        // (1) Obtener el email del usuario logueado
-        String email = principal.getName();
-
-        // (2) Buscar el usuario en la base de datos
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
-
-        if (usuarioOpt.isEmpty()) {
-            // Manejar error si el usuario no se encuentra (aunque debería)
-            return "redirect:/login?error=Usuario no encontrado";
+        if (principal == null) {
+            return "redirect:/login"; // Proteger la ruta si no hay sesión
         }
 
-        // (3) Enviar el objeto Usuario completo a la vista
-        model.addAttribute("usuario", usuarioOpt.get());
+        // (1) Obtener el objeto Usuario completo
+        String email = principal.getName();
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
 
-        return "perfil"; // (4) Busca el archivo templates/perfil.html
+        // (2) Buscar y pasar las tarjetas guardadas
+        List<Tarjeta> tarjetas = tarjetaRepository.findByUsuario(usuario);
+
+        // (3) Enviar datos a la vista
+        model.addAttribute("usuario", usuario); // Usuario principal
+        model.addAttribute("tarjetas", tarjetas); // Lista de tarjetas
+
+        return "perfil"; // Busca el archivo templates/perfil.html
     }
 
     // -----------------------------------------------------------------
-    // MÉTODO NUEVO: PROCESAR LA ACTUALIZACIÓN DEL PERFIL
+    // MÉTODO: PROCESAR LA ACTUALIZACIÓN DEL PERFIL
+    // -----------------------------------------------------------------
     @PostMapping("/perfil/actualizar")
     public String updateProfile(
             @RequestParam String nombre,
@@ -125,4 +135,45 @@ public class AuthController {
 
         return "redirect:/perfil"; // Redirige de vuelta a la página de perfil
     }
+
+    // Dentro de AuthController.java, después de updateProfile(...)
+
+    // -----------------------------------------------------------------
+// MÉTODO NUEVO: PROCESAR EL CAMBIO DE EMAIL
+// -----------------------------------------------------------------
+    @PostMapping("/perfil/cambiar-email")
+    public String updateEmail(
+            @RequestParam String nuevoEmail,
+            Principal principal,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        String emailActual = principal.getName();
+
+        // (1) Verificar si el nuevo email ya está en uso por otro usuario
+        if (!emailActual.equals(nuevoEmail) && usuarioRepository.findByEmail(nuevoEmail).isPresent()) {
+            redirectAttributes.addFlashAttribute("error", "Ese correo ya está registrado por otra cuenta.");
+            return "redirect:/perfil";
+        }
+
+        // (2) Obtener y actualizar el usuario
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(emailActual);
+
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            usuario.setEmail(nuevoEmail); // Actualiza el email
+            usuarioRepository.save(usuario);
+
+            // Cierra la sesión forzando la redirección al logout de Spring Security
+            redirectAttributes.addFlashAttribute("success", "Correo actualizado con éxito. Por favor, vuelve a iniciar sesión con tu nuevo correo.");
+            return "redirect:/logout";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Error interno al encontrar su perfil.");
+            return "redirect:/perfil";
+        }
+    }
+
 }

@@ -10,7 +10,7 @@
 
 <div th:replace="~{fragments/header :: header}"></div>
 
-<main class="container">
+<main class="container centered-view">
     <div class="login-container">
         <h1>Iniciar Sesión</h1>
 
@@ -19,15 +19,19 @@
         </div>
 
         <form th:action="@{/login}" method="POST">
+
             <div class="form-group">
                 <label for="username">Email</label>
-                <input type="email" id="username" name="username" class="form-control" required autofocus>
+                <input type="text" id="username" name="username" class="form-control" ...>
             </div>
+
             <div class="form-group">
                 <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" class="form-control" required>
+                <input type="password" id="password" name="password" class="form-control" ...>
             </div>
+
             <button type="submit" class="btn-login">Entrar</button>
+
         </form>
 
         <div class="register-link">

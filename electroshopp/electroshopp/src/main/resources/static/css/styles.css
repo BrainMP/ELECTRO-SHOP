@@ -164,6 +164,87 @@ a:hover {
     text-decoration: none;
 }
 
+       /* CSS Adicional para la vista de Perfil - Puedes mover esto a styles.css si prefieres */
+        .profile-section {
+            margin-bottom: 25px; /* Espacio entre secciones */
+            padding-bottom: 15px; /* Relleno inferior para la línea divisoria */
+            border-bottom: 1px solid #eee; /* Línea divisoria suave */
+        }
+
+        .profile-section:last-of-type {
+            border-bottom: none; /* No hay línea en la última sección */
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .profile-section h2 {
+            font-size: 1.6em; /* Un poco más grande para los títulos de sección */
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        .profile-section h2 i {
+            margin-right: 10px;
+            color: #007bff; /* Iconos en azul */
+        }
+        .form-group label {
+            font-weight: bold;
+            display: block; /* Cada label en su propia línea */
+            margin-bottom: 8px;
+            color: #555;
+        }
+        .form-group input.form-control {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px 12px;
+            font-size: 1em;
+            width: 100%; /* Ocupa el ancho completo del grupo */
+            max-width: 280px; /* Ancho máximo para campos de texto */
+            box-sizing: border-box; /* Incluye padding y border en el width */
+        }
+        .form-group button {
+            margin-top: 10px; /* Espacio entre input y botón */
+            padding: 10px 18px;
+            font-size: 0.95em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .btn-blue { /* Clase para botones azules */
+            background: #007bff;
+            color: white;
+            border: none;
+        }
+        .btn-blue:hover {
+            background: #0056b3;
+        }
+        .info-text-small {
+            font-size: 0.85em;
+            color: #777;
+            margin-top: 10px;
+        }
+        .card-list {
+            margin-top: 20px;
+        }
+        .card-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .card-item i {
+            margin-right: 10px;
+            font-size: 1.6em;
+        }
+        .card-item strong {
+            margin-right: 5px;
+        }
+
 /* =========================================
    ESTILOS DEL ICONO DEL CARRITO
    ========================================= */
@@ -279,7 +360,7 @@ a:hover {
 }
 
 .social-icon:hover {
-    background-color: #ff6600; /* Fondo naranja */
+    background-color:  #0099ff ; /* Fondo naranja */AQUIIIIIII
     transform: scale(1.1);
     color: white; /* El ícono se mantiene blanco */
 }
@@ -726,119 +807,263 @@ a:hover {
     border-color: #ff6b00 !important;
     color: #ff6b00 !important;
 }
+/* =========================================
+   ESTILOS DE LIMPIEZA PARA CARRITO (Refactorización)
+   ========================================= */
 
-/* CSS para LOGIN */
+/* Títulos de secciones internas (Método de pago) */
+.payment-section-title {
+    font-size: 1.2em;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Alerta específica cuando no hay tarjetas */
+.no-cards-alert {
+    margin-top: 10px;
+    background: #e9f5ff;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #b8daff;
+    color: #004085;
+}
+
+/* Estilos para los textos dentro de la tarjeta (VISA **** 1234) */
+.card-text-type {
+    font-weight: 600;
+    margin-right: 5px;
+    color: #333;
+}
+
+.card-text-digits {
+    color: #777;
+}
+
+.card-text-expiry {
+    /* Usamos margin-left: auto para empujarlo a la derecha,
+       pero sin que se salga del contenedor flex */
+    margin-left: auto;
+    font-size: 0.9em;
+    color: #888;
+    padding-left: 10px; /* Espacio mínimo de seguridad */
+}
+
+/* Aviso rojo cuando no hay tarjeta seleccionada */
+.no-card-warning {
+    color: #dc3545; /* Rojo estándar */
+    font-weight: bold;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.95em;
+}
+
+/* Ajustes de espaciado para los contenedores principales */
+.payment-method-selection {
+    margin-top: 30px;
+    /* Los demás estilos (background, shadow) ya están definidos arriba en tu CSS */
+}
+
+.cart-summary-card {
+    margin-top: 25px;
+    /* Los demás estilos ya están definidos arriba en tu CSS */
+}
+
+/* Ajuste final para el botón de seguir comprando */
+.secondary-checkout-btn {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* =========================================
+   ESTILOS DE SELECCIÓN DE TARJETA
+   ========================================= */
+
+.payment-method-selection {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.radio-card-option {
+    position: relative;
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0; /* Borde gris suave */
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+    background-color: #fff; /* Fondo blanco limpio */
+}
+
+/* Efecto al pasar el mouse: Borde azul y fondo muy tenue */
+.radio-card-option:hover {
+    border-color: #0056b3;
+    background-color: #f0f8ff; /* AliceBlue (muy clarito) */
+    box-shadow: 0 4px 8px rgba(0, 86, 179, 0.15);
+}
+
+/* Estilo de la etiqueta para que ocupe todo el espacio clickeable */
+.radio-card-option label {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.05em;
+    color: #333;
+}
+
+/* Separar el input radio del texto */
+.radio-card-option input[type="radio"] {
+    margin-right: 15px;
+    transform: scale(1.2); /* Hace el circulito un poco más grande */
+    accent-color: #0056b3; /* Pone el circulito en azul cuando se selecciona */
+}
+
+/* Iconos de las tarjetas */
+.radio-card-option i {
+    font-size: 1.8em;
+    margin-right: 10px;
+    width: 30px;
+    text-align: center;
+}
+
+/* Colores específicos para los iconos */
+.fa-cc-visa { color: #1A1F71; }
+.fa-cc-mastercard { color: #EB001B; }
+.fa-credit-card { color: #555; } /* Para "OTRA" */
+
+/* Ajuste del botón de Pagar para que combine con tu tema naranja */
+.btn-pagar-ahora {
+    background-color: #66C2FF!important; /* Naranja marca */
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    letter-spacing: 1px;
+    transition: background-color 0.3s;
+}
+
+.btn-pagar-ahora:hover {
+    background-color: #e65c00 !important; /* Naranja más oscuro al hover */
+}
+
+/* =========================================
+   ESTILOS UNIFICADOS PARA FORMULARIOS (LOGIN/REGISTRO/PERFIL)
+   ========================================= */
+
 .login-container {
-            max-width: 450px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        .login-container h1 {
-            text-align: center;
-            border-bottom: none;
-            margin-bottom: 25px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            font-size: 1em;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box; /* Importante para que el padding no rompa el ancho */
-        }
-        .btn-login {
-            width: 100%;
-            padding: 12px;
-            font-size: 1.1em;
-            font-weight: 600;
-            border-radius: 5px;
-            border: none;
-            background-color: #0056b3; /* Azul primario */
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .btn-login:hover {
-            background-color: #004080;
-        }
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border: 1px solid #f5c6cb;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .register-link {
-            text-align: center;
-            margin-top: 20px;
-        }
+    width: 100%;
+    max-width: 420px;        /* Ancho elegante */
+    background-color: #fff;
+    padding: 40px;           /* Espacio interno generoso */
+    border-radius: 12px;     /* Bordes suaves */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Sombra moderna */
+    margin: 0 auto;          /* Centrado horizontal básico */
+}
 
-/* CSS para REGISTER*/
-        .login-container {
-            max-width: 450px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        .login-container h1 {
-            text-align: center;
-            border-bottom: none;
-            margin-bottom: 25px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            font-size: 1em;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-        .btn-login {
-            width: 100%;
-            padding: 12px;
-            font-size: 1.1em;
-            font-weight: 600;
-            border-radius: 5px;
-            border: none;
-            background-color: #0056b3;
-            color: white;
-            cursor: pointer;
-        }
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border: 1px solid #f5c6cb;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .login-link {
-            text-align: center;
-            margin-top: 20px;
-        }
+.login-container h1 {
+    text-align: center;
+    border-bottom: none;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+    color: #333;
+}
 
+/* Contenedor flexible para alinear hijos */
+.login-container form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* REGLA REFORZADA: Form Group sin padding extra */
+.form-group {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 0;              /* Resetear padding */
+    border: none;            /* Quitar bordes invisibles */
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+/* REGLA REFORZADA: Input con ancho forzado */
+.form-control {
+    width: 100% !important;        /* Forzar ancho completo */
+    max-width: 100% !important;    /* Evitar desbordamiento */
+    box-sizing: border-box !important; /* Crucial: padding dentro del ancho */
+    height: 45px;
+    padding: 10px 15px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    margin: 0;                     /* Resetear márgenes externos */
+    display: block;                /* Asegurar comportamiento de bloque */
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.form-control:focus {
+    background-color: #fff;
+    border-color: #0056b3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+}
+
+/* REGLA REFORZADA: Botón con ancho forzado idéntico */
+.btn-login {
+    width: 100% !important;        /* Forzar ancho completo */
+    max-width: 100% !important;    /* Evitar desbordamiento */
+    box-sizing: border-box !important; /* Crucial */
+    height: 45px;
+    padding: 0;                    /* Sin padding lateral que afecte el ancho */
+    display: flex;                 /* Flex para centrar texto */
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1em;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    background-color: #0056b3;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;              /* Espacio arriba */
+    margin-bottom: 0;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-login:hover {
+    background-color: #004494;
+    transform: translateY(-2px);
+}
+
+.register-link, .login-link {
+    width: 100%;
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.95em;
+}
+
+.alert-danger {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff5f5;
+    color: #c53030;
+    padding: 12px;
+    border: 1px solid #fc8181;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 0.9em;
+}
         /* =========================================
                ESTILOS DEL MENÚ DESPLEGABLE DE USUARIO
                ========================================= */

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Carrito de Compras - ELECTRO SHOP</title>
-    <link rel="stylesheet" href="/css/styles.css?v=6">
+    <link rel="stylesheet" href="/css/styles.css?v=9">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 </head>
 <body>
@@ -13,12 +13,13 @@
 <main class="cart-container">
 
     <div th:if="${items.isEmpty()}">
-        <p class="empty-cart-message">Tu carrito está vacío. ¡Explora nuestros <a th:href="@{/}" class="link-productos">productos</a>!</p>
+        <p class="empty-cart-message">Tu carrito está vacío. ¡Explora nuestros
+            <a th:href="@{/}" class="link-productos">productos</a>!
+        </p>
     </div>
 
     <div th:unless="${items.isEmpty()}">
 
-        <!-- Encabezado de entrega -->
         <div class="delivery-options-card">
             <h3 class="delivery-title">Elige como quieres recibir tu pedido</h3>
             <div class="delivery-buttons-container">
@@ -27,24 +28,17 @@
             </div>
         </div>
 
-        <!-- Items del carrito -->
         <div class="cart-items-wrapper">
             <div class="cart-item-card" th:each="item : ${items}">
 
-                <!-- Columna Imagen -->
                 <div class="cart-item-image">
                     <img th:src="${item.producto.imagenUrl}" alt="Producto" class="product-thumbnail">
                 </div>
 
-                <!-- Columna Información -->
                 <div class="cart-item-info">
-                    <!-- Código del producto -->
                     <div class="product-code" th:text="${item.producto.modelo}">GEN-IS</div>
+                    <h4 class="product-title" th:text="${item.producto.nombre}">Generador Portátil</h4>
 
-                    <!-- Nombre del producto -->
-                    <h4 class="product-title" th:text="${item.producto.nombre}">Generador de Gasolina Portátil 1500W</h4>
-
-                    <!-- Controles de cantidad -->
                     <div class="quantity-controls-wrapper">
                         <div class="quantity-selector">
                             <a th:href="@{/cart/decrease/{id}(id=${item.producto.id})}" class="qty-btn minus">-</a>
@@ -53,40 +47,85 @@
                         </div>
                     </div>
 
-                    <!-- Mensaje de descuento -->
-                    <div class="discount-badge">
-                        IVA Incluido <Incluido></Incluido>
-                    </div>
+                    <div class="discount-badge">IVA Incluido</div>
                 </div>
 
-                <!-- Columna Precio y Acciones -->
                 <div class="cart-item-actions">
                     <div class="item-total-price"
                          th:text="'$' + ${#numbers.formatDecimal(item.producto.precio * item.cantidad, 1, 2)}">
                         $110.00
                     </div>
-                    <a th:href="@{/cart/remove/{id}(id=${item.producto.id})}" class="remove-product-btn">Eliminar</a>
+                    <a th:href="@{/cart/remove/{id}(id=${item.producto.id})}" class="remove-product-btn">
+                        Eliminar
+                    </a>
                 </div>
             </div>
         </div>
 
-        <!-- Resumen y botones -->
+        <div class="payment-method-selection">
+            <h2 class="payment-section-title">
+                Seleccionar Método de Pago
+            </h2>
+
+            <div th:if="${tarjetas.isEmpty()}" class="no-cards-alert">
+                Aún no tienes tarjetas guardadas.
+                <a th:href="@{/perfil/tarjetas/agregar}">Añadir una tarjeta</a> para pagar.
+            </div>
+
+            <div th:unless="${tarjetas.isEmpty()}">
+                <form id="checkoutForm" th:action="@{/checkout}" method="POST">
+
+                    <div th:each="tarjeta : ${tarjetas}" class="radio-card-option">
+
+                        <input type="radio" name="tarjetaId"
+                               th:id="'card-' + ${tarjeta.id}"
+                               th:value="${tarjeta.id}" required>
+
+                        <label th:for="'card-' + ${tarjeta.id}">
+                            <i class="fab fa-cc-visa" th:if="${tarjeta.tipo == 'VISA'}"></i>
+                            <i class="fab fa-cc-mastercard" th:if="${tarjeta.tipo == 'MASTERCARD'}"></i>
+                            <i class="fas fa-credit-card" th:if="${tarjeta.tipo != 'VISA' and tarjeta.tipo != 'MASTERCARD'}"></i>
+
+                            <span class="card-text-type" th:text="${tarjeta.tipo}">VISA</span>
+
+                            <span class="card-text-digits">**** <span th:text="${tarjeta.digitosFinales}">1234</span></span>
+
+                            <span class="card-text-expiry">
+                                Vence: <span th:text="${tarjeta.fechaVencimiento}">12/29</span>
+                            </span>
+                        </label>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
         <div class="cart-summary-card">
+
             <div class="total-section">
                 <div class="subtotal-line">
                     <span class="total-label">Subtotal:</span>
-                    <span class="total-amount" th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}">$110.00</span>
+                    <span class="total-amount"
+                          th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}">
+                        $110.00
+                    </span>
                 </div>
             </div>
 
             <div class="checkout-buttons">
-                <!-- Botón PAGAR AHORA (MODIFICADO) -->
-                <form th:action="@{/checkout}" method="post" style="display: inline; width: 100%;">
-                    <button type="submit" class="primary-checkout-btn" style="width: 100%;">Pagar Ahora</button>
-                </form>
 
-                <!-- Botón SEGUIR COMPRANDO (MODIFICADO) -->
-                <a th:href="@{/cart/continue-shopping}" class="secondary-checkout-btn" style="display: block; text-align: center; text-decoration: none;">
+                <button th:if="${!tarjetas.isEmpty()}"
+                        type="submit"
+                        form="checkoutForm"
+                        class="btn-pagar-ahora">
+                    PAGAR AHORA
+                </button>
+
+                <p th:if="${tarjetas.isEmpty()}" class="no-card-warning">
+                    Debe añadir una tarjeta para poder pagar.
+                </p>
+
+                <a th:href="@{/}" class="secondary-checkout-btn">
                     Seguir Comprando
                 </a>
             </div>

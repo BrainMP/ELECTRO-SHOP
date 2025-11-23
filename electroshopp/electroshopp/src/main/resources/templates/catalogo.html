@@ -32,7 +32,9 @@
             </a>
 
             <form th:action="@{/cart/add}" method="POST">
-                <input type="hidden" name="productoId" th:value="${producto.id}" />
+                <input type="hidden" name="productoId" th:value="${producto.id}">
+
+                <input type="hidden" name="redirectUrl" th:value="@{/}">
 
                 <button type="submit" class="btn-comprar">Añadir al Carrito</button>
             </form>

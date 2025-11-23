@@ -2,7 +2,11 @@ package com.electroshop.controller;
 
 import com.electroshop.model.CarritoItem; // Ahora usamos el CarritoItem de la BD
 import com.electroshop.model.Producto;
+import com.electroshop.model.Tarjeta;
+import com.electroshop.model.Usuario;
 import com.electroshop.repository.ProductoRepository;
+import com.electroshop.repository.TarjetaRepository;
+import com.electroshop.repository.UsuarioRepository;
 import com.electroshop.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +30,11 @@ public class CartController {
     @Autowired
     private CartService cartService; // Este es el nuevo CartService v2
 
+    @Autowired
+    private TarjetaRepository tarjetaRepository; // (1) INYECTAR REPOSITORIO DE TARJETAS
+
+    @Autowired
+    private UsuarioRepository usuarioRepository; // (2) INYECTAR REPOSITORIO DE USUARIO
     // ----------------------------------------------------
     // AÑADIR PRODUCTO (MODIFICADO)
     // ----------------------------------------------------
@@ -33,6 +42,7 @@ public class CartController {
     public String addToCart(
             @RequestParam("productoId") Long productoId,
             @RequestParam(value = "cantidad", defaultValue = "1") int cantidad,
+            @RequestParam(value = "redirectUrl", defaultValue = "/") String redirectUrl,
             RedirectAttributes redirectAttributes,
             Principal principal // (2) OBTENER USUARIO LOGUEADO
     ) {
@@ -50,7 +60,12 @@ public class CartController {
         cartService.addItem(producto, cantidad, email);
 
         redirectAttributes.addFlashAttribute("mensaje", "¡Producto añadido al carrito con éxito!");
-        return "redirect:/producto/" + productoId;
+        if (redirectUrl.startsWith("/producto/")) {
+            return "redirect:" + redirectUrl;
+        } else {
+            // Para todas las demás vistas (Catálogo, Home, etc.), regresa a la URL base.
+            return "redirect:" + redirectUrl;
+        }
     }
 
     // ----------------------------------------------------
@@ -69,6 +84,12 @@ public class CartController {
         List<CarritoItem> items = cartService.getItems(email);
         BigDecimal total = cartService.getTotalPrice(email);
 
+        // (B) Obtener la lista de tarjetas del usuario logueado
+        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
+        if (usuario != null) {
+            List<Tarjeta> tarjetas = tarjetaRepository.findByUsuario(usuario);
+            model.addAttribute("tarjetas", tarjetas); // Enviar las tarjetas a la vista
+        }
         model.addAttribute("items", items);
         model.addAttribute("total", total);
 

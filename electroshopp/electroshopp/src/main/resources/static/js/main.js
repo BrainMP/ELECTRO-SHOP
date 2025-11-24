@@ -120,3 +120,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000); // 4000ms = 4 segundos
     }
 });
+    /* =========================================
+       LÓGICA DEL MODAL DE ELIMINAR TARJETA
+       ========================================= */
+
+    function abrirModalEliminar(idTarjeta) {
+        // 1. Asigna el ID de la tarjeta al input oculto del formulario
+        var inputId = document.getElementById('inputTarjetaId');
+        if (inputId) {
+            inputId.value = idTarjeta;
+        }
+
+        // 2. Muestra el modal
+        var modal = document.getElementById('modalEliminar');
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
+
+    function cerrarModal() {
+        var modal = document.getElementById('modalEliminar');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    // Cerrar si se hace clic fuera de la caja blanca (Overlay)
+    window.onclick = function(event) {
+        var modal = document.getElementById('modalEliminar');
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }

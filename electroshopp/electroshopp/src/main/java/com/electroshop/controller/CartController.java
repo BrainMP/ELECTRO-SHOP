@@ -96,9 +96,6 @@ public class CartController {
         return "cart-view"; // (Tu plantilla cart-view.html)
     }
 
-    // (Ya no necesitamos el método auxiliar 'calcularTotal'
-    // porque el servicio ya lo hace)
-
     // ----------------------------------------------------
     // INCREMENTAR CANTIDAD (MODIFICADO)
     // ----------------------------------------------------

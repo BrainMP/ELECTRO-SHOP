@@ -115,4 +115,41 @@ public class TarjetaController {
         // Simulación de un token de 10 caracteres
         return String.valueOf(new Random().nextLong()).substring(0, 10);
     }
+
+    // ----------------------------------------------------
+// ELIMINAR TARJETA (POST)
+// ----------------------------------------------------
+    @PostMapping("/perfil/tarjetas/eliminar")
+    public String deleteCard(
+            @RequestParam("tarjetaId") Long tarjetaId,
+            Principal principal,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            Usuario usuario = getUsuarioLogueado(principal);
+
+            // 1. Buscar la tarjeta por ID
+            Tarjeta tarjeta = tarjetaRepository.findById(tarjetaId)
+                    .orElseThrow(() -> new RuntimeException("Tarjeta no encontrada"));
+
+            // 2. SEGURIDAD CRÍTICA: Verificar que la tarjeta pertenezca al usuario actual
+            if (!tarjeta.getUsuario().getId().equals(usuario.getId())) {
+                redirectAttributes.addFlashAttribute("error", "No tienes permiso para eliminar esta tarjeta.");
+                return "redirect:/perfil";
+            }
+
+            // 3. Eliminar la tarjeta
+            tarjetaRepository.delete(tarjeta);
+            redirectAttributes.addFlashAttribute("success", "Tarjeta eliminada correctamente.");
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al eliminar la tarjeta.");
+        }
+
+        return "redirect:/perfil";
+    }
 }

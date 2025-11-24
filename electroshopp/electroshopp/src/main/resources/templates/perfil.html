@@ -3,58 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <title>Mi Perfil - ELECTRO SHOP</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css?v=10">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="container">
-    <div class="login-container"> <h1 class="login-title">Mi Perfil</h1>
+    <div class="login-container">
 
-        <div th:if="${success}" class="alert alert-success" th:text="${success}" style="margin-bottom: 20px;"></div>
-        <div th:if="${error}" class="alert alert-danger" th:text="${error}" style="margin-bottom: 20px;"></div>
+        <h1 class="login-title">Mi Perfil</h1>
 
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <!-- SECCIÓN 1: INFORMACIÓN PERSONAL -->
         <div class="profile-section">
             <h2><i class="fas fa-user-circle"></i> Información Personal</h2>
             <form th:action="@{/perfil/actualizar}" method="POST">
                 <div class="form-group">
                     <label for="nombre">Nombre:</label>
                     <input type="text" id="nombre" name="nombre" class="form-control"
-                           th:value="${usuario.nombre}"
-                           required>
-                    <button type="submit" class="btn-sm btn-blue">Guardar Nombre</button>
+                           th:value="${usuario.nombre}" required>
+                    <button type="submit" class="btn-sm btn-blue btn-profile-action">Guardar Nombre</button>
                 </div>
-                <div class="form-group" style="margin-top: 20px;">
+                <div class="form-group email-display-group">
                     <label>Email:</label>
                     <p><strong th:text="${usuario.email}"></strong></p>
                 </div>
             </form>
         </div>
 
+        <!-- SECCIÓN 2: CAMBIAR CORREO -->
         <div class="profile-section">
             <h2><i class="fas fa-envelope"></i> Cambiar Correo Electrónico</h2>
             <form th:action="@{/perfil/cambiar-email}" method="POST">
                 <div class="form-group">
                     <label for="nuevoEmail">Nuevo Correo Electrónico:</label>
                     <input type="email" id="nuevoEmail" name="nuevoEmail" class="form-control"
-                           th:value="${usuario.email}"
-                           required>
-                    <button type="submit" class="btn-sm btn-blue">Actualizar Email</button>
+                           th:value="${usuario.email}" required>
+                    <button type="submit" class="btn-sm btn-blue btn-profile-action">Actualizar Email</button>
                     <p class="info-text-small">
-                        *Al cambiar tu correo, se cerrará tu sesión por motivos de seguridad. Deberás iniciar sesión con el nuevo email.
+                        *Al cambiar tu correo, se cerrará tu sesión por seguridad.
                     </p>
                 </div>
             </form>
         </div>
 
+        <!-- SECCIÓN 3: SEGURIDAD -->
+        <div class="profile-section">
+            <h2><i class="fas fa-lock"></i> Seguridad</h2>
+            <form th:action="@{/perfil/cambiar-password}" method="POST">
+                <div class="form-group">
+                    <label for="currentPassword">Contraseña Actual:</label>
+                    <input type="password" id="currentPassword" name="currentPassword"
+                           class="form-control" required placeholder="Ingresa tu contraseña actual">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Nueva Contraseña:</label>
+                    <input type="password" id="newPassword" name="newPassword"
+                           class="form-control" required placeholder="Ingresa la nueva contraseña">
+
+                    <button type="submit" class="btn-sm btn-blue btn-profile-action">Actualizar Contraseña</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- SECCIÓN 4: MÉTODOS DE PAGO -->
         <div class="profile-section">
             <h2><i class="fas fa-credit-card"></i> Métodos de Pago</h2>
 
-            <div style="margin-bottom: 20px;">
-                <a th:href="@{/perfil/tarjetas/agregar}" class="btn-primary btn-blue" style="text-decoration: none; display: inline-block; padding: 10px 18px;">
+            <div class="add-card-btn-container">
+                <a th:href="@{/perfil/tarjetas/agregar}" class="btn-primary btn-blue btn-add-card">
                     + Añadir Nueva Tarjeta
                 </a>
             </div>
@@ -65,21 +86,62 @@
 
             <div th:unless="${tarjetas.isEmpty()}" class="card-list">
                 <div th:each="tarjeta : ${tarjetas}" class="card-item">
-                    <i class="fab fa-cc-visa" th:if="${tarjeta.tipo == 'VISA'}" style="color: navy;"></i>
-                    <i class="fab fa-cc-mastercard" th:if="${tarjeta.tipo == 'MASTERCARD'}" style="color: darkorange;"></i>
-                    <strong th:text="${tarjeta.tipo}"></strong> **** <span th:text="${tarjeta.digitosFinales}"></span>
-                    (Vence: <span th:text="${tarjeta.fechaVencimiento}"></span>)
+
+                    <div class="card-info">
+                        <i class="fab fa-cc-visa" th:if="${tarjeta.tipo == 'VISA'}"></i>
+                        <i class="fab fa-cc-mastercard" th:if="${tarjeta.tipo == 'MASTERCARD'}"></i>
+                        <i class="fas fa-credit-card" th:if="${tarjeta.tipo != 'VISA' and tarjeta.tipo != 'MASTERCARD'}"></i>
+
+                        <span class="card-text">
+                            <strong th:text="${tarjeta.tipo}">VISA</strong>
+                            **** <span th:text="${tarjeta.digitosFinales}">1234</span>
+                            <span class="card-expiry">(Vence: <span th:text="${tarjeta.fechaVencimiento}"></span>)</span>
+                        </span>
+                    </div>
+
+                    <button type="button"
+                            class="btn-delete-card"
+                            th:attr="onclick='abrirModalEliminar(\'' + ${tarjeta.id} + '\')'"
+                            title="Eliminar tarjeta">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+
                 </div>
             </div>
         </div>
 
-        <div class="register-link" style="margin-top: 30px;">
+        <div class="register-link back-link">
             <a th:href="@{/}">← Volver al Inicio</a>
         </div>
 
-    </div> </main>
+    </div>
+</main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
-<script src="/js/main.js"></script>
+
+<!-- MODAL -->
+<div id="modalEliminar" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-icon">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <h3>¿Eliminar Tarjeta?</h3>
+        <p class="modal-text">
+            Esta acción no se puede deshacer.<br>¿Estás seguro de que deseas continuar?
+        </p>
+
+        <div class="modal-buttons">
+            <button type="button" onclick="cerrarModal()" class="btn-modal-cancel">Cancelar</button>
+
+            <form th:action="@{/perfil/tarjetas/eliminar}" method="POST" id="formEliminarTarjeta" style="margin:0;">
+                <input type="hidden" name="tarjetaId" id="inputTarjetaId">
+                <button type="submit" class="btn-modal-confirm">Sí, Eliminar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/js/main.js?v=final"></script>
+
 </body>
 </html>

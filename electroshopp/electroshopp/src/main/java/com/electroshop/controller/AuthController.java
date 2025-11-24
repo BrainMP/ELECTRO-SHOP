@@ -136,8 +136,6 @@ public class AuthController {
         return "redirect:/perfil"; // Redirige de vuelta a la página de perfil
     }
 
-    // Dentro de AuthController.java, después de updateProfile(...)
-
     // -----------------------------------------------------------------
 // MÉTODO NUEVO: PROCESAR EL CAMBIO DE EMAIL
 // -----------------------------------------------------------------
@@ -174,6 +172,40 @@ public class AuthController {
             redirectAttributes.addFlashAttribute("error", "Error interno al encontrar su perfil.");
             return "redirect:/perfil";
         }
+    }
+
+    // En AuthController.java
+
+    // -----------------------------------------------------------------
+// MEJORA 1: CAMBIAR CONTRASEÑA
+// -----------------------------------------------------------------
+    @PostMapping("/perfil/cambiar-password")
+    public String changePassword(
+            @RequestParam String currentPassword,
+            @RequestParam String newPassword,
+            Principal principal,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        String email = principal.getName();
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        // 1. Verificar que la contraseña actual coincida con la guardada
+        if (!passwordEncoder.matches(currentPassword, usuario.getPassword())) {
+            redirectAttributes.addFlashAttribute("error", "La contraseña actual es incorrecta.");
+            return "redirect:/perfil";
+        }
+
+        // 2. Encriptar la nueva contraseña y guardarla
+        usuario.setPassword(passwordEncoder.encode(newPassword));
+        usuarioRepository.save(usuario);
+
+        redirectAttributes.addFlashAttribute("success", "¡Contraseña actualizada correctamente!");
+        return "redirect:/perfil";
     }
 
 }

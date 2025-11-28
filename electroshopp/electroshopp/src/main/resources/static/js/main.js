@@ -35,6 +35,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+        // ==================================================================
+            // --- 6. LÓGICA DE MODALES (Modal de Archivar Pedido) ---
+            // ==================================================================
+
+            // Solo existe en pedido-detalle.html, la búsqueda debe ser en DOMContentLoaded.
+            const modalArchivar = document.getElementById("archiveModal");
+            const openButtonArchivar = document.getElementById("openArchiveModal");
+
+            if (modalArchivar) {
+                const closeButtonArchivar = modalArchivar.querySelector(".close-button");
+                const cancelButtonArchivar = modalArchivar.querySelector(".btn-modal-cancel");
+
+                // --- A. Abrir Modal ---
+                if (openButtonArchivar) {
+                    openButtonArchivar.addEventListener('click', () => {
+                        // Muestra el modal (usando flex para centrado)
+                        modalArchivar.style.display = 'flex';
+                    });
+                }
+
+                // --- B. Cerrar Modal con X o Cancelar ---
+                if (closeButtonArchivar) {
+                    closeButtonArchivar.addEventListener('click', () => {
+                        modalArchivar.style.display = 'none';
+                    });
+                }
+
+                if (cancelButtonArchivar) {
+                    cancelButtonArchivar.addEventListener('click', () => {
+                        modalArchivar.style.display = 'none';
+                    });
+                }
+
+                // --- C. Cerrar Modal si se hace clic fuera (Overlay) ---
+                window.addEventListener('click', (event) => {
+                     // Si el evento es el modal (el overlay) y está visible
+                    if (event.target === modalArchivar) {
+                        modalArchivar.style.display = 'none';
+                    }
+                });
+            }
     });
 
     // ------------------------------------------------------------------

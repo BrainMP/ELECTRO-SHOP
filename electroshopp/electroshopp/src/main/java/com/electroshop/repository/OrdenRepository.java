@@ -16,4 +16,10 @@ public interface OrdenRepository extends JpaRepository<Orden, Long> {
      * @return Una lista de pedidos pertenecientes a ese usuario, ordenados por fecha.
      */
     List<Orden> findByUsuarioOrderByFechaCreacionDesc(Usuario usuario);
+
+    /**
+     * NUEVO MÉTODO: Trae solo los pedidos que NO están archivados.
+     * Esto se usará en la vista principal de "Mis Pedidos" para mantenerla limpia.
+     */
+    List<Orden> findByUsuarioAndArchivadoFalseOrderByFechaCreacionDesc(Usuario usuario);
 }

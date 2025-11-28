@@ -26,7 +26,7 @@ public class Carrito {
      * cascade = CascadeType.ALL: Si borro el carrito, se borran todos los items.
      * orphanRemoval = true: Si quito un item de esta lista, se borra de la BD.
      */
-    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<CarritoItem> items = new ArrayList<>();
 
     // --- Getters y Setters ---

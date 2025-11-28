@@ -108,7 +108,7 @@ public class TarjetaController {
         if (numero.startsWith("5")) {
             return "MASTERCARD";
         }
-        return "OTRA";
+        return "CARNET";
     }
 
     private String generarToken() {

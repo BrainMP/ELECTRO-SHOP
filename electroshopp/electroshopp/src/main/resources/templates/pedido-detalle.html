@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Detalle Pedido #' + ${pedido.id}">Detalle Pedido - ELECTRO SHOP</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container">
+    <a href="/pedidos" class="btn btn-secondary mb-3"><i class="fas fa-arrow-left"></i> Volver a Mis Pedidos</a>
+
+    <h1 th:text="'Detalle del Pedido #' + ${pedido.id}">Detalle del Pedido #12345</h1>
+
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="detail-card">
+                <h2>Productos en la Orden</h2>
+                <table class="product-table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Producto</th>
+                        <th>Modelo</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="detalle : ${pedido.detalles}">
+                        <td><img th:src="${detalle.imagenUrl}" alt="Imagen de Producto" class="product-img"></td>
+                        <td th:text="${detalle.nombreProducto}">Nombre del Producto</td>
+                        <td th:text="${detalle.modeloProducto}">Modelo</td>
+                        <td th:text="${detalle.cantidad}">2</td>
+                        <td th:text="'$' + ${#numbers.formatDecimal(detalle.precioUnitario, 1, 2)}">$100.00</td>
+                        <td th:text="'$' + ${#numbers.formatDecimal(detalle.precioUnitario * detalle.cantidad, 1, 2)}">$200.00</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="detail-card">
+                <h2>Resumen y Estado</h2>
+                <p><strong>ID de Pedido:</strong> <span th:text="${pedido.id}">12345</span></p>
+                <p><strong>Fecha:</strong> <span th:text="${#temporals.format(pedido.fechaCreacion, 'dd/MM/yyyy HH:mm')}">Fecha</span></p>
+                <p><strong>Estado Actual:</strong>
+                    <span class="status-badge-detail"
+                          th:classappend="'status-' + ${pedido.estado}"
+                          th:text="${pedido.estado}">PENDIENTE</span>
+                </p>
+
+                <div class="summary-box mt-4">
+                    <p>Subtotal: <span th:text="'$' + ${#numbers.formatDecimal(pedido.montoTotal, 1, 2)}"></span></p>
+                    <p>Envío: <span>$0.00</span></p>
+                    <p class="total-line">Total: <span th:text="'$' + ${#numbers.formatDecimal(pedido.montoTotal, 1, 2)}"></span></p>
+                </div>
+
+                <div class="action-buttons">
+                    <form th:action="@{/pedidos/cancelar}" method="post" th:if="${pedido.estado == 'PENDIENTE'}">
+                        <input type="hidden" name="pedidoId" th:value="${pedido.id}">
+                        <button type="submit" class="btn-cancel" onclick="return confirm('¿Estás seguro de que deseas cancelar este pedido?')">
+                            <i class="fas fa-times"></i> Cancelar Pedido
+                        </button>
+                    </form>
+
+                    <button type="button" class="btn-archive" id="openArchiveModal"
+                            th:if="${!pedido.archivado and (pedido.estado != 'PENDIENTE')}">
+                        <i class="fas fa-archive"></i> Archivar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<div id="archiveModal" class="modal">
+    <div class="modal-content archive-modal-content">
+        <span class="close-button">&times;</span>
+        <div class="modal-icon">
+            <i class="fas fa-archive"></i>
+        </div>
+        <h2>¿Archivar Pedido?</h2>
+        <p>Archivar este pedido lo ocultará de la lista principal de pedidos activos. Puedes encontrarlo en tu historial de pedidos archivados.</p>
+        <div class="modal-buttons">
+            <button class="btn-modal-cancel">Cancelar</button>
+            <form th:action="@{/pedidos/archivar}" method="post" style="display: inline;">
+                <input type="hidden" name="pedidoId" th:value="${pedido.id}">
+                <button type="submit" class="btn-modal-confirm-archive">Sí, Archivar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script src="/js/main.js"></script>

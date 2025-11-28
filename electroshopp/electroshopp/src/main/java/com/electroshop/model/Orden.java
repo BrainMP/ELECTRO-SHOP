@@ -1,7 +1,6 @@
 package com.electroshop.model;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,11 +23,21 @@ public class Orden implements Serializable {
     @Column(nullable = false)
     private BigDecimal montoTotal;
 
-    // --- Relaciones ---
+    // =================================================================
+    // NUEVOS CAMPOS PARA LAS MEJORAS (ESTADO Y ARCHIVADO)
+    // =================================================================
+
+    // Para saber si se puede cancelar (PENDIENTE) o si ya finalizó
+    @Column(length = 20)
+    private String estado;
+
+    // Para la función "Ocultar/Archivar" pedido de la lista principal
+    private boolean archivado = false;
+
+    // =================================================================
 
     /**
      * Relación con el Usuario (Muchos pedidos pertenecen a Un usuario)
-     * Cuando se carga una Orden, también se trae la info del Usuario.
      */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id", nullable = false)
@@ -36,8 +45,6 @@ public class Orden implements Serializable {
 
     /**
      * Relación con los Detalles (Una orden tiene Muchas líneas de detalle)
-     * CascadeType.ALL: Si guardas/borras una Orden, se guardan/borran sus detalles.
-     * mappedBy: Le dice a JPA que la clase 'OrdenDetalle' es la dueña de esta relación.
      */
     @OneToMany(mappedBy = "orden", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrdenDetalle> detalles = new ArrayList<>();
@@ -45,56 +52,48 @@ public class Orden implements Serializable {
 
     // --- Constructores ---
     public Orden() {
-        // Asigna la fecha actual al momento de crear la orden
         this.fechaCreacion = LocalDateTime.now();
+
+        // CAMBIO: Inicializamos el estado por defecto al crear una orden
+        this.estado = "PENDIENTE";
     }
 
     // --- Getters y Setters ---
-    // (Puedes generarlos automáticamente en tu IDE si lo prefieres)
 
-    public Long getId() {
-        return id;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
+    public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
+
+    public BigDecimal getMontoTotal() { return montoTotal; }
+    public void setMontoTotal(BigDecimal montoTotal) { this.montoTotal = montoTotal; }
+
+    public Usuario getUsuario() { return usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+
+    public List<OrdenDetalle> getDetalles() { return detalles; }
+    public void setDetalles(List<OrdenDetalle> detalles) { this.detalles = detalles; }
+
+    // --- NUEVOS GETTERS Y SETTERS NECESARIOS ---
+
+    public String getEstado() {
+        return estado;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
+    public boolean isArchivado() {
+        return archivado;
     }
 
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public BigDecimal getMontoTotal() {
-        return montoTotal;
-    }
-
-    public void setMontoTotal(BigDecimal montoTotal) {
-        this.montoTotal = montoTotal;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public List<OrdenDetalle> getDetalles() {
-        return detalles;
-    }
-
-    public void setDetalles(List<OrdenDetalle> detalles) {
-        this.detalles = detalles;
+    public void setArchivado(boolean archivado) {
+        this.archivado = archivado;
     }
 
     // --- Método útil ---
-    // Sincroniza la relación: añade un detalle a la lista Y
-    // le asigna esta orden al detalle.
     public void addDetalle(OrdenDetalle detalle) {
         detalles.add(detalle);
         detalle.setOrden(this);
